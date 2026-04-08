@@ -21,4 +21,15 @@ namespace HRManagement.Models
         public DateTime? NgayBatDau { get; set; }
         public DateTime? HanChot { get; set; }
     }
+
+    public class LapBangLuongRequest
+    {
+        public string MaNV { get; set; } = string.Empty;
+        public int Thang { get; set; }
+        public int Nam { get; set; }
+        public float SoNgayCong { get; set; }
+        public decimal LuongCoBan { get; set; }
+        public decimal ThuongKPI { get; set; }
+        public decimal KhauTru { get; set; }
+    }
 }

@@ -2,6 +2,7 @@ import EmployeeDirectory from './components/EmployeeDirectory.js';
 import UnifiedTaskForm from './components/UnifiedTaskForm.js';
 import EmployeeAttendance from './components/EmployeeAttendance.js';
 import EmployeeTasks from './components/EmployeeTasks.js';
+import SalaryManagement from './components/SalaryManagement.js';
 
 // Bước 1: Khởi tạo State toàn cục (Xóa session cũ để luôn bắt đầu ở trang đăng nhập)
 localStorage.clear(); // Xóa dữ liệu cũ
@@ -54,7 +55,7 @@ function initAuth() {
         DOM.userLabel.textContent = window.appState.user.hoTen;
         
         // Render navigation based on Role
-        if (window.appState.user.role === 'QuanLy') {
+        if (window.appState.user.role === 'QuanLy' || window.appState.user.role === 'KeToan') {
             DOM.mainNav.innerHTML = `
                 <button data-tab="employees" class="tab-btn">
                     <i class="fa-solid fa-users text-xs"></i> Nhân viên
@@ -62,8 +63,11 @@ function initAuth() {
                 <button data-tab="workspace" class="tab-btn">
                     <i class="fa-solid fa-pen-ruler text-xs"></i> Phân công
                 </button>
+                <button data-tab="salary" class="tab-btn">
+                    <i class="fa-solid fa-money-bill-wave text-xs"></i> Lương
+                </button>
             `;
-            if (!['employees', 'workspace'].includes(window.appState.currentTab)) {
+            if (!['employees', 'workspace', 'salary'].includes(window.appState.currentTab)) {
                 window.appState.currentTab = 'employees';
             }
         } else {
@@ -74,8 +78,11 @@ function initAuth() {
                 <button data-tab="mytasks" class="tab-btn">
                     <i class="fa-solid fa-list-check text-xs"></i> Công việc của tôi
                 </button>
+                <button data-tab="salary" class="tab-btn">
+                    <i class="fa-solid fa-money-bill-wave text-xs"></i> Lương
+                </button>
             `;
-            if (!['attendance', 'mytasks'].includes(window.appState.currentTab)) {
+            if (!['attendance', 'mytasks', 'salary'].includes(window.appState.currentTab)) {
                 window.appState.currentTab = 'attendance';
             }
         }
@@ -148,6 +155,7 @@ export function switchTab(tab) {
     else if (tab === 'workspace') UnifiedTaskForm.render(DOM.viewOutlet);
     else if (tab === 'attendance') EmployeeAttendance.render(DOM.viewOutlet);
     else if (tab === 'mytasks') EmployeeTasks.render(DOM.viewOutlet);
+    else if (tab === 'salary') SalaryManagement.render(DOM.viewOutlet);
     
     setTimeout(() => DOM.viewOutlet.classList.remove('fade-in'), 300);
 }

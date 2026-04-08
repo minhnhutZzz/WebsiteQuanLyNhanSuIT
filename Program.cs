@@ -11,6 +11,7 @@ builder.Services.AddControllers();
 // DI Configuration
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<INhiemVuService, NhiemVuService>();
+builder.Services.AddScoped<ILuongService, LuongService>();
 
 // JWT Authentication Configuration
 var key = Encoding.ASCII.GetBytes("Super_Secret_Key_For_Demo_Purpose_123!");

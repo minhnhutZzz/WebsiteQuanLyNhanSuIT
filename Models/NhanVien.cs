@@ -25,4 +25,12 @@ namespace HRManagement.Models
             Role = "HR";
         }
     }
+
+    public class KeToan : NhanVien
+    {
+        public KeToan()
+        {
+            Role = "KeToan";
+        }
+    }
 }

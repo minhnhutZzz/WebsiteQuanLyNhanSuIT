@@ -1,0 +1,1554 @@
+BỘ GIÁO DỤC VÀ ĐÀO TẠO
+TRƯỜNG ĐẠI HỌC CÔNG NGHỆ KỸ THUẬT TP. HCM
+KHOA CÔNG NGHỆ THÔNG TIN
+
+                                                  
+ĐỒ ÁN MÔN HỌC 
+QUẢN LÝ DỰ ÁN PHẦN MỀM 
+XÂY DỰNG WEBSITE QUẢN LÝ NHÂN SỰ IT
+GVHD: THS. NGUYỄN TRẦN THI VĂN
+Nhóm thực hiện: Nhóm 03
+Sinh viên thực hiện: 
+1. Lê Hồ Chí Bảo 23110179
+2. Đào Minh Nhựt23110282
+3. Lê Thanh Tân23110316
+4. Nguyễn Bảo Lợi  23110256
+Mã lớp học: SOPM431679_08
+Thành phố Hồ Chí Minh, Tháng 3 năm 2026
+Đề tài báo cáo
+Môn: QUẢN LÝ DỰ ÁN PHẦN MỀM (2026)
+---o0o---
+Cách thức thực hiện:
+1.    Thực hiện theo nhóm (3-5 SV/nhóm) đã đăng ký.
+2.    Thực hiện trong thời gian ~6 tuần
+3.    Kết quả / Sản phẩm: file WORD (.DOC hoặc .DOCX), trình bày thành 01 quyển báo cáo hoàn chỉnh cho mỗi nhóm. Báo cáo cần được trình bày theo mẫu quy định, được in ra và nộp vào cuối kỳ trước khi chấm vấn đáp (thời gian và địa điểm thông báo sau).
+4.    Yêu cầu cụ thể:
+Đối với đề tài / dự án mà nhóm đã chọn, hãy trình bày báo cáo về các nội dung dưới đây.
+4.1 Mô tả chi tiết các yêu cầu đặt ra đối với đề tài / dự án của nhóm (lập Project Requirements Document).
+ 4.1.1. Yêu cầu chức năng nghiệp vụ (bảng)
+a. Bộ phận (Người thực hiện): Kế toán
+Bảng yêu cầu chức năng nghiệp vụ của Kế toán
+STT
+Công việc
+Loại công việc
+Quy định/Công thức liên quan
+Biểu mẫu liên quan
+Ghi chú
+1
+Lập bảng lương
+Lưu trữ
+- Tính toán dựa trên: Ngày công, KPI, Bảo hiểm…
+Dữ liệu phải được tổng hợp đầy đủ trước khi tính toán lương.
+2
+Chi trả lương
+Lưu trữ
+- Liên kết hệ thống Banking API.
+- Trạng thái giao dịch phải được cập nhật ngay lập tức.
+Yêu cầu xác thực mã OTP.
+3
+Phân bổ tài sản
+Lưu trữ
+- Tài sản IT (Laptop, Server...) gắn với mã nhân viên.
+- Kiểm tra tình trạng thiết bị khi bàn giao.
+4
+Xuất báo cáo thuế
+Kết xuất
+- Báo cáo được trình bày theo quy định.
+Có thể kết xuất định dạng XML/PDF để nộp thuế.
+b. Bộ phận (Người thực hiện): Quản lý
+Bảng yêu cầu chức năng nghiệp vụ của Quản lý
+STT
+Công việc
+Loại công việc
+Quy định/Công thức liên quan
+Biểu mẫu liên quan
+Ghi chú
+1
+Phân công nhiệm vụ
+Lưu trữ
+- Gán Task cho  nhân viên IT.
+- Đồng bộ lịch làm việc vào Google Calendar.
+Theo dõi tiến độ thời gian thực.
+2
+Đánh giá hiệu suất
+Lưu trữ
+- Đánh giá dựa trên KPI
+Phiếu đánh giá nhân viên
+Căn cứ quan trọng để tính lương thưởng.
+3
+Phê duyệt nghỉ phép
+Lưu trữ
+- Kiểm tra số dư phép năm còn lại.
+- Tự động gửi thông báo qua Email sau khi duyệt/từ chối.
+Đơn xin nghỉ phép
+Nếu duyệt, dữ liệu tự động đẩy về Kế toán.
+4
+Cung cấp tài liệu nghiệp vụ 
+Lưu trữ
+- Hệ thống tự động gửi email thông báo thông qua SMTP hoặc Email Service.
+- Giới hạn dung lượng tệp đính kèm < 25MB.
+Có chức năng xem trước (Preview) trước khi gửi.
+5
+Quyết định thôi việc
+Lưu trữ
+- Kiểm tra các nghĩa vụ tài chính và tài sản chưa hoàn tất.
+Tự động khóa tài khoản truy cập hệ thống sau ngày nghỉ.
+c. Bộ phận (Người thực hiện): Nhân viên
+Bảng yêu cầu chức năng nghiệp vụ của Nhân viên
+STT
+Công việc
+Loại công việc
+Quy định/Công thức liên quan
+Biểu mẫu liên quan
+Ghi chú
+1
+Cập nhật hồ sơ cá nhân 
+Lưu trữ
+- Cho phép sửa thông tin cá nhân, tài khoản ngân hàng.
+Tự động cập nhật dữ liệu nguồn cho Kế toán.
+2
+Đăng ký nghỉ phép
+Lưu trữ
+- Đăng ký trước ít nhất 24h (nghỉ ngắn) hoặc 1 tuần (nghỉ dài).
+Form đăng ký nghỉ
+Đính kèm minh chứng nếu nghỉ ốm (Giấy khám bệnh).
+3
+Tra cứu lịch sử lương
+Tra cứu
+- Hiển thị chi tiết các khoản thu nhập/khấu trừ theo từng tháng.
+Phiếu lương cá nhân 
+Đảm bảo tính bảo mật (Chỉ xem được lương của mình).
+d. Bộ phận (Người thực hiện): HR (Tuyển dụng)
+           Bảng yêu cầu chức năng nghiệp vụ HR
+STT
+Công việc
+Loại công việc
+Quy định/Công thức liên quan
+Biểu mẫu liên quan
+Ghi chú
+1
+Đăng tin tuyển dụng
+Lưu trữ
+- Đăng tải lên các nền tảng IT (Facebook)
+Tích hợp hệ thống đẩy tin tự động.
+2
+Sàng lọc hồ sơ
+Lưu trữ
+- Lọc hồ sơ theo kinh nghiệm, trình độ của ứng viên.
+Gắn nhãn trạng thái: Đạt/Không đạt/Dự phòng.
+3
+Tạo buổi phỏng vấn
+Lưu trữ
+- Kiểm tra phòng họp trống qua hệ thống
+- Đồng bộ lịch vào Google Calendar của Interviewer.
+4
+Cập nhật kết quả phỏng vấn
+Lưu trữ
+- Tổng hợp nhận xét từ các thành viên hội đồng.
+- Gửi email thông báo kết quả tự động cho ứng viên.
+Phiếu đánh giá phỏng vấn
+Lưu lịch sử để đối chiếu nếu ứng viên ứng tuyển lại.
+5
+Lưu kho nhân tài
+Lưu trữ
+- Phân loại ứng viên tiềm năng.
+e. Bộ phận (Người thực hiện): Bộ phận Đào tạo
+Bảng yêu cầu chức năng nghiệp vụ của Bộ phận đào tạo
+STT
+Công việc
+Loại công việc
+Quy định/Công thức liên quan
+Biểu mẫu liên quan
+Ghi chú
+1
+Tạo lộ trình đào tạo
+Lưu trữ
+- Thiết lập các module học.
+- Quy định thời hạn hoàn thành cho từng giai đoạn.
+Áp dụng riêng cho từng vị trí.
+2
+Phân công người hướng dẫn
+Lưu trữ
+-  Phân công nhân sự để hướng dẫn cho nhân viên
+- Mentor phải thuộc cùng dự án hoặc cùng chuyên môn.
+3
+Đánh giá kết quả thử việc
+Kết xuất
+- Đánh giá Tỷ lệ hoàn thành từ người hướng dẫn trực tiếp.
+Là căn cứ để HR chuẩn bị hợp đồng chính thức.
+4.1.2. Yêu cầu chức năng hệ thống (bảng)
+Bảng yêu cầu chức năng hệ thống
+STT
+Nội dung
+Mô tả chi tiết
+Ghi chú
+1
+Quản lý phân quyền & Bảo mật 
+- Hệ thống kiểm soát quyền truy cập dựa trên vai trò.
+Đảm bảo tính bảo mật dữ liệu lương và hồ sơ cá nhân.
+2
+Xử lý tính toán & Tổng hợp dữ liệu
+- Hệ thống tự động quét dữ liệu từ các module Chấm công, KPI, Bảo hiểm để tính lương.
+3
+Tích hợp & Đồng bộ hệ thống bên thứ ba
+- Hệ thống xử lý mail: Tự động gửi email thông báo thông qua SMTP hoặc Email Service. (Phiếu lương, Tài liệu).
+- Banking: Kết nối API để thực hiện lệnh chi trả lương hàng loạt.
+- Google Calendar: Tự động đồng bộ lịch phỏng vấn và nhiệm vụ.
+Yêu cầu kết nối Internet và cấu hình API chính xác.
+4
+Hệ thống thông báo & Cảnh báo.
+- Tự động gửi thông báo (Push notification/Email) khi:
+• Có yêu cầu nghỉ phép mới cần duyệt.
+• Bảng lương đã được lập thành công.
+• Sắp đến lịch phỏng vấn hoặc thời hạn hoàn thành Task.
+• Có thay đổi về cấu hình thuế hoặc bảo hiểm.
+Tăng tính tương tác thời gian thực.
+5
+Lưu trữ, Sao lưu & Phục hồi dữ liệu
+- Hệ thống tự động sao lưu cơ sở dữ liệu định kỳ hàng ngày.
+- Mã hóa thông tin nhạy cảm trước khi lưu vào DB.
+- Lưu vết lịch sử chỉnh sửa lương và phê duyệt của Quản lý/Kế toán.
+- Hỗ trợ phục hồi dữ liệu khi hệ thống gặp sự cố.
+Đảm bảo tính toàn vẹn và an toàn thông tin.
+4.1.3. Yêu cầu phi chức năng/ chất lượng (bảng)
+Bảng yêu cầu về chất lượng
+STT
+Nội Dung
+Tiêu chuẩn
+Mô tả chi tiết
+Ghi chú
+1
+Giao diện trực quan & chuyên nghiệp
+Thân thiện 
+Màn hình Dashboard quản trị hiển thị rõ ràng các biểu đồ nhân sự. Các bảng dữ liệu (Lương, Chấm công) hỗ trợ lọc, tìm kiếm và sắp xếp thông minh.
+2
+Tính chính xác tuyệt đối của dữ liệu
+Tin cậy
+Các thuật toán tính Thuế TNCN, Bảo hiểm và Lương thực nhận phải khớp không được phép sai số.
+Quan trọng nhất đối với nghiệp vụ Kế toán.
+3
+Bảo mật đa tầng & Phân quyền
+Bảo mật 
+Sử dụng mã hóa mật khẩu và cơ chế xác thực để quản lý phiên đăng nhập. Đảm bảo nhân viên không thể xem lương của đồng nghiệp. Hệ thống chỉ cho phép truy cập đúng vai trò đã định.
+Tuân thủ quy định bảo vệ dữ liệu cá nhân.
+4
+Hiệu năng xử lý & Tốc độ
+Hiệu quả
+Thời gian phản hồi nhanh. Tốc độ tổng hợp bảng lương cho hàng trăm nhân viên không quá 5 giây.
+Đảm bảo trải nghiệm mượt mà dù dữ liệu lớn.
+5
+Khả năng mở rộng & Tích hợp
+Tiến hóa
+Cấu trúc mã nguồn dễ dàng bổ sung thêm các Module mới hoặc tích hợp thêm các Banking API.
+6
+Tính toàn vẹn dữ liệu
+Toàn vẹn 
+Dữ liệu không bị mất mát hoặc sai lệch khi có sự cố ngắt kết nối đột ngột trong quá trình lưu bảng lương. Có lịch sử lưu vết (Log) các thao tác thay đổi lương.
+7
+Độ sẵn sàng cao
+Sẵn sàng
+Hệ thống hoạt động ổn định, đặc biệt là trong các kỳ cao điểm chốt lương cuối tháng.
+Backup dữ liệu định kỳ hàng ngày.
+4.2 Lập Project Charter cho dự án
+Tôn chỉ Dự án (Project Charter)
+Tên dự án (Project Title): Website Quản lý nhân sự IT
+Ngày bắt đầu (Project Start Date): 24/02/2026
+Ngày kết thúc (Projected Finish Date): 13/04/2026
+Thông tin về Kinh phí (Budget Information): Dự án nằm ở phạm vi của đồ án môn học nên chưa tính đến thông tin về kinh phí để triển khai. Nếu triển khai trong thực tế. Kinh phí sẽ bao gồm cho việc vận hành hạ tầng (Server, Domain), chi phí tích hợp API và triển khai thử nghiệm.
+GĐ Dự án (Project Manager): 
+Họ Tên: Lê Hồ Chí Bảo
+ĐT: 0375478xxx
+Email: 23110179@student.hcmute.edu.vn
+Mục tiêu dự án (Project Objectives):
+Hỗ trợ số hóa phần lớn quy trình quản lý nhân sự: Từ tuyển dụng, đào tạo đến thôi việc.
+Tự động hóa tính lương: Đảm bảo độ chính xác tuyệt đối, tích hợp biểu thuế lũy tiến và bảo hiểm xã hội hiện hành.
+Tích hợp hệ sinh thái IT: Kết nối thành công Google Calendar cho lịch phỏng vấn và Gmail API cho thông báo.
+Tối ưu hóa quản trị: Cung cấp hệ thống báo cáo, thống kê trực quan về hiệu suất (KPI) và biến động nhân sự.
+Cách tiếp cận (Approach):
+Mô hình phát triển: Áp dụng phương pháp Agile/Scrum để linh hoạt trong việc thay đổi yêu cầu.
+Công nghệ sử dụng: ASP.NET Core (C#), SQL Server.
+Tích hợp bên thứ ba: Sử dụng RESTful API để kết nối ngân hàng (Thanh toán) và Google Services.
+Kiểm thử: Thực hiện Unit Test cho các hàm tính toán lương và System Test cho toàn bộ luồng nghiệp vụ trên Webapp.
+Vai trò và Trách nhiệm (Roles and Responsibilities):
+Vai trò
+Họ Tên
+Tổ chức/Vị trí (Organization/Position)
+Liên hệ (Contact information)
+Chữ ký
+GĐ Dự án (PM)
+Lê Hồ Chí Bảo
+Trưởng nhóm / Quản lý chung
+23110179@student.hcmute.edu.vn
+Dev
+Lê Thanh Tân
+Lập trình Frontend
+23110316@student.hcmute.edu.vn
+Dev
+Nguyễn Bảo Lợi
+Lập trình Backend
+23110256@student.hcmute.edu.vn
+Tester
+Đào Minh Nhựt
+Đảm bảo chất lượng hệ thống
+23110282@student.hcmute.edu.vn
+Chú thích (Comments): Dự án tập trung mạnh vào tính bảo mật dữ liệu lương và khả năng mở rộng cho các doanh nghiệp phần mềm. Ưu tiên hoàn thiện Module Lập bảng lương và Tuyển dụng trước.
+4.3 Lập Scope Statement cho dự án.
+PHÁT BIỂU VỀ PHẠM VI - Scope Statement
+Tên dự án (Project Title): Website Quản lý nhân sự IT
+Ngày (Date): 26/02/2026
+Người viết (Prepared by): Lê Hồ Chí Bảo
+Lý giải về dự án (Project Justification):
+Trong môi trường doanh nghiệp, việc quản lý nhân sự đặc thù gặp nhiều khó khăn như: tính toán thuế thu nhập cá nhân phức tạp, theo dõi lộ trình đào tạo nhân viên mới và quản lý lịch phỏng vấn dày đặc. Hệ thống này ra đời nhằm tự động hóa các quy trình thủ công, đảm bảo tính chính xác tuyệt đối trong việc lập bảng lương và tối ưu hóa việc kết nối với các hệ sinh thái bên thứ ba (Google, ngân hàng), từ đó nâng cao hiệu quả quản trị và giảm thiểu sai sót con người.
+Các tính chất và yêu cầu của sản phẩm (Product Characteristics and Requirements):
+Tính lương tự động & Chính xác: Hệ thống tự động quét dữ liệu từ các module để tính toán lương Gross/Net, Thuế TNCN lũy tiến và Bảo hiểm xã hội theo quy định hiện hành.
+Tích hợp hệ sinh thái đa dạng: Kết nối API với Google Calendar (lịch phỏng vấn), Gmail (thông báo tài liệu) và api ngân hàng (chi trả lương).
+Phân quyền bảo mật (RBAC): Hệ thống phân quyền chặt chẽ cho 5 nhóm đối tượng (Kế toán, Quản lý, HR, Đào tạo, Nhân viên), đảm bảo an toàn thông tin nhân sự và lương thưởng.
+Giao diện trực quan & Báo cáo: Cung cấp Dashboard thống kê hiệu suất (KPI) và báo cáo biến động nhân sự dưới dạng biểu đồ và tập tin (Excel/PDF).
+Tổng kết về các sản phẩm chuyển giao của dự án (Summary of Project Deliverables):
+Các kết quả liên quan đến quản lý dự án (Project management-related deliverables):
+Tôn chỉ dự án (Project Charter).
+Bản phát biểu phạm vi (Scope Statement).
+Cấu trúc phân rã công việc (WBS) và Từ điển WBS.
+Tiến độ thực hiện dự án (Schedule).
+Kế hoạch quản lý chi phí và đường cơ sở (Cost baseline).
+Báo cáo tình trạng dự án định kỳ và báo cáo kết thúc dự án.
+Sản phẩm liên quan (Product-related deliverables):
+Tài liệu thiết kế: Sơ đồ Use Case, Đặc tả nghiệp vụ chi tiết.
+Mã nguồn phần mềm (Software Code): Toàn bộ mã nguồn Frontend và Backend của hệ thống Web được phát triển bằng C# (ASP.NET) cùng với cơ sở dữ liệu SQL Server.
+Tài liệu hướng dẫn: Tài liệu hướng dẫn sử dụng dành cho Kế toán, Quản lý và Nhân viên.
+Báo cáo kiểm thử: Kết quả Unit Test và System Test đảm bảo hệ thống vận hành ổn định.
+Các yêu cầu để đánh giá sự thành công của dự án (Project Success Criteria):
+Tính chính xác: Module lập bảng lương tính toán đúng so với thực tế đối soát thủ công.
+Tính kết nối: Tích hợp thành công và ổn định dịch vụ bên thứ ba (Google, Gmail).
+Tính bảo mật: Không xảy ra tình trạng rò rỉ dữ liệu lương hoặc truy cập trái phép giữa các vai trò.
+Thời gian: Hoàn thành toàn bộ các module trọng tâm và bàn giao sản phẩm đúng hạn (14/04/2026).
+Mức độ hài lòng: Giao diện được đánh giá là dễ sử dụng và đáp ứng được các kịch bản nghiệp vụ đã đề ra.
+4.4 Lập WBS (Work Breakdown Structure) chi tiết cho dự án.
+WBS cho Dự án: Website Quản lý nhân sự IT
+Người viết: Lê Hồ Chí Bảo
+Ngày: 26/02/2026
+1. Quản lý dự án
+1.1 Khảo sát và thu thập thông tin dự án 
+1.2 Xây dựng Scope Statement (Phạm vi)
+1.3 Lập kế hoạch quản lý nguồn lực và chi phí 
+1.4 Lập tiến độ chi tiết (Gantt Chart)
+1.5 Chốt kế hoạch và phát hành Project Charter
+2. Phân tích và Thiết kế hệ thống
+2.1 Thu thập và phân tích yêu cầu phần mềm 
+2.2 Thiết kế kiến trúc và dữ liệu (Class Diagram)
+2.3 Thiết kế giao diện (UI/UX)
+2.4 Đặc tả chi tiết các Use Case
+3. Phát triển các Module chức năng (ASP.NET Web Application)
+3.1 Thiết lập môi trường và cấu hình API
+3.2 Thiết lập khung/UI Module Quản lý lương và phúc lợi
+3.3 Thiết lập logic tính lương (Thuế, Bảo hiểm, KPI)
+3.4 Tính hợp cổng thanh toán (Banking API)
+3.5 Thiết lập Module Tuyển dụng và Đào tạo
+3.6 Thiết lập Module Quản lý công việc và Hồ sơ
+4. Kiểm thử
+4.1 Kiểm thử đơn vị (Unit Testing)
+4.2 Kiểm thử hệ thống và tích hợp 
+4.3 Kiểm thử API Google Calendar & Gmail 
+4.4 Kiểm thử bảo mật và phân quyền
+      5. Triển khai và kết thúc dự án 
+5.1 Viết tài liệu hướng dẫn sử dụng
+5.2 Bàn giao, nghiệm thu và kết thúc dự án
+4.5 Xác định thứ tự thực hiện các công việc cùng thời gian ước lượng cho mỗi công việc.
+ID
+Công việc
+Thời lượng
+Công việc trước
+A
+1.1 Khảo sát & thu thập thông tin dự án
+2 ngày
+-
+B
+1.2 Xây dựng Scope Statement (Phạm vi)
+2 ngày
+A
+C
+1.3 Lập kế hoạch quản lý nguồn lực & chi phí
+1 ngày
+A
+D
+1.4 Lập tiến độ chi tiết (Gantt Chart)
+2 ngày
+B, C
+E
+1.5 Chốt kế hoạch & Phát hành Project Charter
+1 ngày
+D
+F
+2.1 Thu thập & phân tích yêu cầu phần mềm
+3 ngày
+E
+G
+2.2 Thiết kế kiến trúc & dữ liệu (Class Diagram)
+4 ngày
+F
+H
+2.3 Thiết kế giao diện UI/UX
+3 ngày
+F
+I
+2.4 Đặc tả chi tiết Use Case
+2 ngày
+F
+J
+3.1 Thiết lập môi trường & cấu hình API
+2 ngày
+G, H, I
+K
+3.2 Thiết lập Khung/UI Module QL Lương & Phúc lợi
+4 ngày
+J
+L
+3.3 Thiết lập logic tính lương (Thuế, BH, KPI)
+3 ngày
+K
+M
+3.4 Tích hợp cổng thanh toán (Banking API)
+2 ngày
+L
+N
+3.5 Thiết lập Module Tuyển dụng & Đào tạo
+2 ngày
+J
+O
+3.6 Thiết lập Module QL Công việc & Hồ sơ
+2 ngày
+J
+P
+4.1 Kiểm thử đơn vị (Unit Testing)
+3 ngày
+L, N, O
+Q
+4.2 Kiểm thử hệ thống & Tích hợp (SIT)
+2 ngày
+P, M
+R
+4.3 Kiểm thử API Google Calendar & Gmail
+1 ngày
+Q
+S
+4.4 Kiểm thử bảo mật & phân quyền (RBAC)
+2 ngày
+Q
+T
+5.1 Viết tài liệu hướng dẫn sử dụng
+2 ngày
+R, S
+U
+5.2 Bàn giao, nghiệm thu & Kết thúc dự án
+1 ngày
+T
+4.6 Lập sơ đồ PERT cho dự án theo AoA và AoN, xác định đường găng và thời gian tối thiểu để hoàn thành dự án theo ước lượng. Tính Ts và Tm cho các nút sự kiện, xác định các công việc găng đối với AoA. Tính ES, EF, LS, LF cho các công việc, xác định các công việc găng đối với AoN.(Bonus: Làm PDM thay cho AON)
+Phương pháp AOA
+Sơ đồ AOA
+Tính Ts
+Node
+Công thức
+Giá trị (Ngày)
+1
+0
+0
+2
+Ts1 + d(A) = 0 + 2 = 2
+2
+4
+Ts2 + d(C) = 2 + 1 = 3
+3
+3
+Max{Ts2 + d(B), Ts4 + d(d1)} = Max{2 + 2, 3 + 0} = Max{4, 3} = 4
+4
+5
+Ts3 + d(D) = 4 + 2 = 6
+6
+6
+Ts5 + d(E) = 6 + 1 = 7
+7
+7
+Ts6 + d(F) = 7 + 3 = 10
+10
+9
+Ts7 + d(H) = 10 + 3 = 13
+13
+10
+Ts7 + d(I) = 10 + 2 = 12
+12
+8
+Max{Ts7 + d(G), Ts9 + d(d2), Ts10 + d(d3)} = Max{10 + 4, 13 + 0, 12 + 0} = Max{14, 13, 12} = 14
+14
+11
+Ts8 + d(J) = 14 + 2 = 16
+16
+12
+Ts11 + d(K) = 16 + 4 = 20
+20
+13
+Ts11 + d(N) = 16 + 2 = 18
+18
+14
+Ts11 + d(O) = 16 + 2 = 18
+18
+15
+Ts12 + d(L) = 20 + 3 = 23
+23
+16
+Max{Ts13 + d(d4), Ts14 + d(d5), Ts15 + d(d6)} = Max{18 + 0, 18 + 0, 23 + 0} = Max{18, 18, 23} = 23
+23
+17
+Max{Ts15 + d(M), Ts16 + d(P)} = Max{23 + 2, 23 + 3} = Max{25, 26} = 26
+26
+18
+Ts17 + d(Q) = 26 + 2 = 28
+28
+20
+Ts18 + d(S) = 28 + 2 = 30
+30
+19
+Max{Ts18 + d(R), Ts20 + d(d7)} = Max{28 + 1, 30 + 0} = Max{29, 30} = 30
+30
+21
+Ts19 + d(T) = 30 + 2 = 32
+32
+22
+Ts21 + d(U) = 32 + 1 = 33
+33
+Tính Tm
+Node
+Công thức
+Giá trị (ngày)
+1
+Tm2 - d(A) = 2 – 2 =0
+0
+2
+Min{Tm3 - d(B), Tm4 - d(C)} = Min{4 - 2, 4 - 1} = Min{2, 3} =2
+2
+3
+Tm5 - d(D) = 6 – 2 = 4
+4
+4
+Tm3 - d(d1) = 4 – 0 = 4
+4
+5
+Tm6 - d(E) = 7 – 1 = 6
+6
+6
+Tm7 - d(F) = 10 – 3 = 7
+7
+7
+Min{Tm8 - d(G), Tm9 - d(H), Tm10 - d(I)} = Min{14 - 4, 14 - 3, 14 - 2} = Min{10, 11, 12} = 10
+10
+8
+Tm11 - d(J) = 16 – 2 = 14
+14
+9
+Tm8 - d(d2) = 14 – 0 = 14
+14
+10
+Tm8 - d(d3) = 14 – 0 = 14
+14
+11
+Min{Tm12 - d(K), Tm13 - d(N), Tm14 - d(O)} = Min{20 - 4, 23 - 2, 23 - 2} = Min{16, 21, 21} = 16
+16
+12
+Tm15 - d(L) = 23 – 3 = 20
+20
+13
+Tm16 - d(d4) = 23 – 0 = 23
+23
+14
+Tm16 - d(d5) = 23 – 0 = 23
+23
+15
+Min{Tm17 - d(M), Tm16 - d(d6)} = Min{26 - 2, 23 - 0} = Min{24, 23} = 23
+23
+16
+Tm17 - d(P) = 26 – 3 = 23
+23
+17
+Tm18 - d(Q) = 28 – 2 = 26
+26
+18
+Min{Tm19 - d(R), Tm20 - d(S)} = Min{30 - 1, 30 - 2} = Min{29, 28} = 28
+28
+19
+Tm21 - d(T) = 32 – 2 = 30
+30
+20
+Tm19 - d(d7) = 30 – 0 = 30
+30
+21
+Tm22 - d(U) = 33 – 1 = 32
+32
+22
+Ts22
+33
+Đường găng: A→B→D→E→F→G→J→K→L→P→Q→S→T→U.
+Thời gian tối thiểu hoàn thành dự án: 33 ngày.
+Xác định các công việc găng:
+Công việc
+Cung sự kiện (i→j)
+Thời lượng (t)
+Ts​(i)
+Tm​(j)
+Thời gian dự trữ hoàn toàn (R)
+Phân loại
+A
+1 →2
+2
+0
+2
+2 - 0 - 2 = 0
+Găng
+B
+2 →3
+2
+2
+4
+4 - 2 - 2 = 0
+Găng
+C
+2→ 4
+1
+2
+4
+4 - 2 - 1 = 1
+Không găng
+D
+3 →5
+2
+4
+6
+6 - 4 - 2 = 0
+Găng
+E
+5 →6
+1
+6
+7
+7 - 6 - 1 = 0
+Găng
+F
+6 →7
+3
+7
+10
+10 - 7 - 3 = 0
+Găng
+G
+7 →8
+4
+10
+14
+14 - 10 - 4 = 0
+Găng
+H
+7 →9
+3
+10
+14
+14 - 10 - 3 = 1
+Không găng
+I
+7 →10
+2
+10
+14
+14 - 10 - 2 = 2
+Không găng
+J
+8 →11
+2
+14
+16
+16 - 14 - 2 = 0
+Găng
+K
+11 →12
+4
+16
+20
+20 - 16 - 4 = 0
+Găng
+L
+12 →15
+3
+20
+23
+23 - 20 - 3 = 0
+Găng
+N
+11 →13
+2
+16
+23
+23 - 16 - 2 = 5
+Không găng
+O
+11 →14
+2
+16
+23
+23 - 16 - 2 = 5
+Không găng
+M
+15 →17
+2
+23
+26
+26 - 23 - 2 = 1
+Không găng
+P
+16 →17
+3
+23
+26
+26 - 23 - 3 = 0
+Găng
+Q
+17 →18
+2
+26
+28
+28 - 26 - 2 = 0
+Găng
+R
+18 →19
+1
+28
+30
+30 - 28 - 1 = 1
+Không găng
+S
+18 →20
+2
+28
+30
+30 - 28 - 2 = 0
+Găng
+T
+19 →21
+2
+30
+32
+32 - 30 - 2 = 0
+Găng
+U
+21 →22
+1
+32
+33
+33 - 32 - 1 = 0
+Găng
+Phương pháp PDM
+Sơ đồ PDM
+Tính ES và EF 
+Công việc
+Tính ES
+Giá trị ES
+Tính EF (ES + t)
+Giá trị EF (ngày)
+A
+0
+0
+0 + 2
+2
+B
+EF(A)
+2
+2 + 2
+4
+C
+EF(A)
+2
+2 + 1
+3
+D
+Max{EF(B), EF(C)} = Max{4, 3}
+4
+4 + 2
+6
+E
+EF(D)
+6
+6 + 1
+7
+F
+EF(E)
+7
+7 + 3
+10
+G
+EF(F)
+10
+10 + 4
+14
+H
+EF(F)
+10
+10 + 3
+13
+I
+EF(F)
+10
+10 + 2
+12
+J
+Max{EF(G), EF(H), EF(I)} = Max{14, 13, 12}
+14
+14 + 2
+16
+K
+EF(J)
+16
+16 + 4
+20
+N
+EF(J)
+16
+16 + 2
+18
+O
+EF(J)
+16
+16 + 2
+18
+L
+EF(K)
+20
+20 + 3
+23
+P
+Max{EF(L), EF(N), EF(O)} = Max{23, 18, 18}
+23
+23 + 3
+26
+M
+EF(L)
+23
+23 + 2
+25
+Q
+Max{EF(P), EF(M)} = Max{26, 25}
+26
+26 + 2
+28
+R
+EF(Q)
+28
+28 + 1
+29
+S
+EF(Q)
+28
+28 + 2
+30
+T
+Max{EF(R), EF(S)} = Max{29, 30}
+30
+30 + 2
+32
+U
+EF(T)
+32
+32 + 1
+33
+Tính LF và LS
+Công việc
+Tính LF
+Giá trị LF
+Tính LS (LF - t)
+Giá trị LS (ngày)
+U
+EF(U)
+33
+33 - 1
+32
+T
+LS(U)
+32
+32 - 2
+30
+R
+LS(T)
+30
+30 - 1
+29
+S
+LS(T)
+30
+30 - 2
+28
+Q
+Min{LS(R), LS(S)} = Min{29, 28}
+28
+28 - 2
+26
+P
+LS(Q)
+26
+26 - 3
+23
+M
+LS(Q)
+26
+26 - 2
+24
+L
+Min{LS(P), LS(M)} = Min{23, 24}
+23
+23 - 3
+20
+N
+LS(P)
+23
+23 - 2
+21
+O
+LS(P)
+23
+23 - 2
+21
+K
+LS(L)
+20
+20 - 4
+16
+J
+Min{LS(K), LS(N), LS(O)} = Min{16, 21, 21}
+16
+16 - 2
+14
+G
+LS(J)
+14
+14 - 4
+10
+H
+LS(J)
+14
+14 - 3
+11
+I
+LS(J)
+14
+14 - 2
+12
+F
+Min{LS(G), LS(H), LS(I)} = Min{10, 11, 12}
+10
+10 - 3
+7
+E
+LS(F)
+7
+7 - 1
+6
+D
+LS(E)
+6
+6 - 2
+4
+B
+LS(D)
+4
+4 - 2
+2
+C
+LS(D)
+4
+4 - 1
+3
+A
+Min{LS(B), LS(C)} = Min{2, 3}
+2
+2 - 2
+0
+Đường găng: A → B → D → E → F → G → J → K → L → P → Q → S → T → U.
+Thời gian tối thiểu hoàn thành dự án: 33 ngày.
+Xác định các công việc găng:
+Công việc
+Công việc trước
+Thời lượng (t)
+ES
+EF
+LS
+LF
+Thời gian dự trữ (Float = LS - ES)
+Phân loại
+A
+-
+2
+0
+2
+0
+2
+0
+Găng
+B
+A
+2
+2
+4
+2
+4
+0
+Găng
+C
+A
+1
+2
+3
+3
+4
+1
+Không găng
+D
+B, C
+2
+4
+6
+4
+6
+0
+Găng
+E
+D
+1
+6
+7
+6
+7
+0
+Găng
+F
+E
+3
+7
+10
+7
+10
+0
+Găng
+G
+F
+4
+10
+14
+10
+14
+0
+Găng
+H
+F
+3
+10
+13
+11
+14
+1
+Không găng
+I
+F
+2
+10
+12
+12
+14
+2
+Không găng
+J
+G, H, I
+2
+14
+16
+14
+16
+0
+Găng
+K
+J
+4
+16
+20
+16
+20
+0
+Găng
+L
+K
+3
+20
+23
+20
+23
+0
+Găng
+N
+J
+2
+16
+18
+21
+23
+5
+Không găng
+O
+J
+2
+16
+18
+21
+23
+5
+Không găng
+M
+L
+2
+23
+25
+24
+26
+1
+Không găng
+P
+L, N, O
+3
+23
+26
+23
+26
+0
+Găng
+Q
+P, M
+2
+26
+28
+26
+28
+0
+Găng
+R
+Q
+1
+28
+29
+29
+30
+1
+Không găng
+S
+Q
+2
+28
+30
+28
+30
+0
+Găng
+T
+R, S
+2
+30
+32
+30
+32
+0
+Găng
+U
+T
+1
+32
+33
+32
+33
+0
+Găng
+4.7 Lập kế hoạch cho dự án (Project Plan) dựa trên các công việc cần thực hiện, nhân sự của dự án và các cột mốc thời gian.
+4.7.1 Mục đích của kế hoạch dự án
+Kế hoạch dự án được xây dựng nhằm xác định rõ các công việc cần thực hiện, nguồn lực tham gia, thời gian thực hiện và các cột mốc quan trọng trong quá trình phát triển hệ thống Website Quản lý nhân sự IT.
+Kế hoạch này giúp nhóm:
+Quản lý tiến độ thực hiện dự án.
+Phân bổ nguồn lực hợp lý giữa các thành viên.
+Theo dõi các mốc hoàn thành quan trọng (Milestones).
+Kiểm soát rủi ro và đảm bảo dự án hoàn thành đúng thời hạn.
+4.7.2 Nhân sự tham gia dự án
+Dự án được thực hiện bởi nhóm 4 thành viên với các vai trò cụ thể như sau:
+STT
+Họ tên
+Vai trò
+Nhiệm vụ chính
+1
+Lê Hồ Chí Bảo
+Project Manager
+Quản lý dự án, lập kế hoạch và theo dõi tiến độ thi công.
+2
+Lê Thanh Tân
+Frontend Developer
+Thiết kế giao diện người dùng (UI) và phát triển phía Client.
+3
+Nguyễn Bảo Lợi
+Backend Developer
+Xây dựng hệ thống API, thiết kế cơ sở dữ liệu và xử lý logic.
+4
+Đào Minh Nhựt
+Tester / QA
+Kiểm thử hệ thống, phát hiện lỗi và đảm bảo chất lượng đầu ra.
+4.7.3 Kế hoạch thực hiện dự án
+Dựa trên WBS và các công việc đã xác định ở phần trước, kế hoạch thực hiện dự án được xây dựng như sau:
+ID
+Công việc
+Người phụ trách
+Thời lượng
+Thời gian dự kiến (Bắt đầu – Kết thúc)
+A
+Khảo sát và thu thập thông tin dự án
+Bảo (PM)
+2 ngày
+24/02/2026 – 25/02/2026
+B
+Xây dựng Scope Statement
+Bảo (PM)
+2 ngày
+26/02/2026 – 27/02/2026
+C
+Lập kế hoạch quản lý nguồn lực và chi phí
+Bảo (PM)
+1 ngày
+26/02/2026 – 26/02/2026
+D
+Lập tiến độ chi tiết (Gantt Chart)
+Bảo (PM)
+2 ngày
+02/03/2026 – 03/03/2026
+E
+Phát hành Project Charter
+Bảo (PM)
+1 ngày
+04/03/2026 – 04/03/2026
+F
+Phân tích yêu cầu hệ thống
+Bảo + Dev
+3 ngày
+05/03/2026 – 09/03/2026
+G
+Thiết kế kiến trúc hệ thống
+Lợi (Backend)
+4 ngày
+10/03/2026 – 13/03/2026
+H
+Thiết kế giao diện (UI/UX)
+Tân (Frontend)
+3 ngày
+10/03/2026 – 12/03/2026
+I
+Đặc tả chi tiết Use Case
+Bảo + Dev
+2 ngày
+10/03/2026 – 11/03/2026
+J
+Thiết lập môi trường và cấu hình API
+Lợi + Tân
+2 ngày
+16/03/2026 – 17/03/2026
+K
+Thiết lập khung/UI Module quản lý lương và phúc lợi
+Tân (Frontend)
+4 ngày
+18/03/2026 – 23/03/2026
+L
+Thiết lập logic tính lương (Thuế, BH, KPI)
+Lợi (Backend)
+3 ngày
+24/03/2026 – 26/03/2026
+M
+Tính hợp cổng thanh toán (Banking API)
+Lợi (Backend)
+2 ngày
+27/03/2026 – 30/03/2026
+N
+Thiết lập Module Tuyển dụng và Đào tạo
+Lợi + Tân
+2 ngày
+27/03/2026 – 30/03/2026
+O
+Thiết lập Module Quản lý công việc và Hồ sơ
+Lợi + Tân
+2 ngày
+27/03/2026 – 30/03/2026
+P
+Kiểm thử đơn vị (Unit Testing)
+Nhựt (Tester)
+3 ngày
+31/03/2026 – 02/04/2026
+Q
+Kiểm thử hệ thống và tích hợp (SIT)
+Nhựt (Tester)
+2 ngày
+03/04/2026 – 06/04/2026
+R
+Kiểm thử API Google Calendar & Gmail
+Nhựt (Tester)
+1 ngày
+07/04/2026 – 07/04/2026
+S
+Kiểm thử bảo mật và phân quyền (RBAC)
+Nhựt (Tester)
+2 ngày
+07/04/2026 – 08/04/2026
+T
+Viết tài liệu hướng dẫn sử dụng
+Bảo + Nhựt
+2 ngày
+09/04/2026 – 10/04/2026
+U
+Bàn giao, nghiệm thu và kết thúc dự án
+Toàn bộ nhóm
+1 ngày
+13/04/2026 – 13/04/2026
+4.7.4 Các cột mốc quan trọng của dự án (Milestones)
+STT
+Milestone
+Thời gian
+1
+Hoàn thành khảo sát và phân tích yêu cầu hệ thống
+09/03/2026
+2
+Hoàn thành thiết kế hệ thống
+13/03/2026
+3
+Hoàn thành thiết lập môi trường và cấu hình API
+17/03/2026
+4
+Hoàn thành phát triển các Module chức năng
+30/03/2026
+5
+Hoàn thành kiểm thử hệ thống
+08/04/2026
+6
+Hoàn thành tài liệu hướng dẫn sử dụng
+10/04/2026
+7
+Bàn giao, nghiệm thu và kết thúc dự án
+13/04/2026
+4.8 Trình bày việc phân công công việc giữa các thành viên trong nhóm đối với các đề mục công việc của dự án.
+ID
+Công việc
+Thành viên phụ trách
+Vai trò
+1.1
+Khảo sát và thu thập thông tin dự án
+Bảo
+Project Manager
+1.2
+Xây dựng Scope Statement
+Bảo
+Project Manager
+1.3
+Lập kế hoạch quản lý nguồn lực và chi phí
+Bảo
+Project Manager
+1.4
+Lập tiến độ chi tiết (Gantt Chart)
+Bảo
+Project Manager
+1.5
+Phát hành Project Charter
+Bảo
+Project Manager
+2.1
+Phân tích yêu cầu hệ thống
+Bảo, Lợi, Tân
+PM + Dev
+2.2
+Thiết kế kiến trúc hệ thống
+Lợi
+Backend Developer
+2.3
+Thiết kế giao diện (UI/UX)
+Tân
+Frontend Developer
+2.4
+Đặc tả chi tiết Use Case
+Bảo, Lợi, Tân
+PM + Dev
+3.1
+Thiết lập môi trường và cấu hình API
+Lợi, Tân
+Developer
+3.2
+Thiết lập khung/UI Module quản lý lương và phúc lợi
+Tân
+Frontend Developer
+3.3
+Thiết lập logic tính lương (Thuế, BH, KPI)
+Lợi
+Backend Developer
+3.4
+Tính hợp cổng thanh toán (Banking API)
+Lợi
+Backend Developer
+3.5
+Thiết lập Module Tuyển dụng và Đào tạo
+Lợi, Tân
+Developer
+3.6
+Thiết lập Module Quản lý công việc và Hồ sơ
+Lợi, Tân
+Developer
+4.1
+Kiểm thử đơn vị (Unit Testing)
+Nhựt
+Tester
+4.2
+Kiểm thử hệ thống và tích hợp (SIT)
+Nhựt
+Tester
+4.3
+Kiểm thử API Google Calendar & Gmail
+Nhựt
+Tester
+4.4
+Kiểm thử bảo mật và phân quyền (RBAC)
+Nhựt
+Tester
+5.1
+Viết tài liệu hướng dẫn sử dụng
+Bảo, Nhựt
+PM + Tester
+5.2
+Bàn giao, nghiệm thu và kết thúc dự án
+Toàn bộ nhóm
+Project Team
+Việc phân công công việc trong dự án được thực hiện dựa trên năng lực và vai trò của từng thành viên trong nhóm nhằm đảm bảo tiến độ và chất lượng dự án.
+Bảo (Project Manager): chịu trách nhiệm quản lý dự án, lập kế hoạch, xác định phạm vi và điều phối các hoạt động của nhóm.
+Lợi (Backend Developer / System Architect): đảm nhận các công việc liên quan đến phân tích hệ thống, thiết kế kiến trúc và phát triển các chức năng cốt lõi của hệ thống.
+Tân (Frontend Developer / UI Designer): phụ trách thiết kế và phát triển giao diện người dùng nhằm đảm bảo tính thân thiện và dễ sử dụng.
+Nhựt (Tester / Documentation): chịu trách nhiệm kiểm thử hệ thống, phát hiện lỗi và chuẩn bị tài liệu hướng dẫn sử dụng.
+4.9 Sử dụng một công cụ quản lý dự án (Microsoft Project, Monday, Jira, Trello, ClickUp, etc.) để thực hiện quản lý dự án của nhóm. Nội dung phần này cần đưa ảnh chụp minh chứng cách sử dụng công cụ để quản lý và theo dõi các task của dự án. Lập sơ đồ Gantt thể hiện việc phân công và theo dõi khối lượng công việc (workload) của mỗi thành viên theo thời gian. (Bonus: Tìm hiểu thêm các tính năng AI để hỗ trợ quản lý dự án – nếu có của công cụ này).
+4.9.1 Công cụ ClickUp
+Để hỗ trợ cho việc lập kế hoạch, phân công công việc và theo dõi tiến độ thực hiện dự án, nhóm đã sử dụng ClickUp – một nền tảng quản lý dự án trực tuyến phổ biến. Công cụ này cho phép các nhóm làm việc tổ chức công việc theo dạng task, phân công nhiệm vụ cho từng thành viên, theo dõi tiến độ thực hiện theo thời gian thực và trực quan hóa kế hoạch dự án thông qua các biểu đồ như Gantt Chart và Workload.
+Việc sử dụng ClickUp giúp nhóm quản lý toàn bộ công việc của dự án trên một hệ thống thống nhất, giúp các thành viên dễ dàng theo dõi nhiệm vụ của mình cũng như nắm được tiến độ chung của dự án.
+4.9.2 Quản lý và theo dõi các công việc của dự án
+Trong ClickUp, các công việc của dự án được tổ chức dưới dạng các Task. Mỗi task tương ứng với một công việc cụ thể trong cấu trúc phân rã công việc (WBS) của dự án. Khi tạo task, nhóm thiết lập các thông tin cần thiết bao gồm tên công việc, người phụ trách (Assignee), thời gian bắt đầu (Start Date), thời hạn hoàn thành (Due Date), trạng thái công việc (Status) và ước lượng thời gian thực hiện (Time Estimate).
+Nhờ việc thiết lập các thông tin này, nhóm có thể dễ dàng theo dõi tiến độ của từng công việc cũng như xác định trách nhiệm của từng thành viên trong dự án. Ngoài ra, ClickUp còn cho phép cập nhật trạng thái công việc như “To do”, “In progress” hoặc “Completed”, giúp các thành viên trong nhóm nắm được tình trạng thực hiện của từng nhiệm vụ trong quá trình triển khai dự án.
+4.9.3 Theo dõi tiến độ dự án bằng biểu đồ Gantt
+Để theo dõi tiến độ thực hiện dự án theo thời gian, nhóm sử dụng tính năng Gantt Chart trong ClickUp. Biểu đồ Gantt cho phép hiển thị trực quan thời gian bắt đầu và thời gian kết thúc của từng công việc trong dự án trên một trục thời gian chung.
+Thông qua biểu đồ này, nhóm có thể dễ dàng quan sát được trình tự thực hiện của các công việc, khoảng thời gian thực hiện của từng nhiệm vụ cũng như mối quan hệ giữa các công việc trong dự án. Điều này giúp nhóm kiểm soát tiến độ tổng thể của dự án và phát hiện sớm những công việc có nguy cơ bị chậm tiến độ.
+Ngoài ra, biểu đồ Gantt cũng hỗ trợ điều chỉnh thời gian thực hiện của các task khi có sự thay đổi trong kế hoạch dự án. Khi một công việc được cập nhật thời gian bắt đầu hoặc thời hạn hoàn thành, biểu đồ sẽ tự động cập nhật để phản ánh tiến độ mới của dự án.
+4.9.4 Theo dõi khối lượng công việc của các thành viên (Workload)
+Bên cạnh việc theo dõi tiến độ của các công việc, nhóm cũng sử dụng tính năng Workload trong ClickUp để quản lý khối lượng công việc của từng thành viên trong nhóm. Tính năng này cho phép hiển thị số giờ làm việc được phân bổ cho mỗi thành viên theo từng ngày hoặc từng khoảng thời gian cụ thể.
+Thông qua Workload View, nhóm có thể quan sát được mức độ phân bổ công việc của từng thành viên, từ đó đảm bảo rằng khối lượng công việc được phân chia hợp lý và tránh tình trạng một thành viên bị quá tải trong khi các thành viên khác chưa được giao nhiều nhiệm vụ.
+Ngoài ra, Workload còn giúp nhóm điều chỉnh kế hoạch khi cần thiết. Khi phát hiện một thành viên có quá nhiều công việc trong cùng một khoảng thời gian, nhóm có thể phân bổ lại nhiệm vụ cho các thành viên khác nhằm đảm bảo tiến độ chung của dự án.
+4.9.5 Ứng dụng các tính năng AI hỗ trợ quản lý dự án
+Trong ClickUp, các tính năng AI đóng vai trò hỗ trợ người dùng trong việc quản lý dự án, tối ưu hóa quy trình làm việc và tiết kiệm thời gian xử lý thông tin. Dưới đây là các tính năng AI đã được sử dụng và minh chứng trong quá trình thực hiện.
+a. AI Assistant (ClickUp Brain)
+AI Assistant cho phép người dùng đặt câu hỏi trực tiếp liên quan đến nội dung công việc như task hoặc tài liệu và nhận được câu trả lời tự động. Khi sử dụng tính năng này, người dùng có thể yêu cầu AI tóm tắt nội dung task, giải thích mục tiêu hoặc cung cấp thông tin tổng quan về công việc.
+Trong quá trình thực hiện, AI đã được sử dụng để tóm tắt nội dung của một task cụ thể. Kết quả cho thấy AI có khả năng hiểu nội dung và trả lời một cách ngắn gọn, rõ ràng, giúp người dùng nhanh chóng nắm bắt thông tin mà không cần đọc toàn bộ nội dung chi tiết.
+b. AI Content Generation
+Tính năng AI Content Generation hỗ trợ tạo và chỉnh sửa nội dung văn bản một cách tự động. Người dùng có thể sử dụng AI để viết lại đoạn văn, tóm tắt nội dung hoặc cải thiện chất lượng câu chữ.
+Trong bài thực hành, một đoạn mô tả dự án đã được nhập vào hệ thống và sử dụng chức năng tóm tắt. Kết quả cho thấy AI có thể rút gọn nội dung nhưng vẫn giữ được ý chính, giúp tiết kiệm thời gian soạn thảo và nâng cao hiệu quả làm việc.
+c. AI Task & Project Management
+AI hỗ trợ trong việc tạo và quản lý công việc bằng cách tự động sinh ra các task và subtask dựa trên mô tả của người dùng. Điều này đặc biệt hữu ích trong giai đoạn lập kế hoạch dự án.
+Cụ thể, người dùng đã nhập một yêu cầu liên quan đến việc phát triển hệ thống quản lý sinh viên và sử dụng AI để tạo danh sách công việc. Kết quả cho thấy AI có thể phân rã công việc thành nhiều task nhỏ như thiết kế hệ thống, phát triển chức năng và kiểm thử. Điều này giúp người quản lý dự án dễ dàng tổ chức và theo dõi tiến độ.
+d. AI Search & Knowledge
+AI Search cho phép tìm kiếm thông tin bằng ngôn ngữ tự nhiên thay vì sử dụng từ khóa truyền thống. Người dùng có thể nhập các câu truy vấn dạng mô tả để tìm kiếm task hoặc tài liệu liên quan.
+Trong quá trình sử dụng, người dùng đã nhập các câu truy vấn liên quan đến chức năng cụ thể của hệ thống và nhận được kết quả phù hợp. Điều này cho thấy AI có khả năng hiểu ngữ cảnh và cung cấp kết quả chính xác, giúp nâng cao hiệu quả tìm kiếm thông tin.
+ 
+4.10 Trình bày kế hoạch kiểm thử và quy trình kiểm thử mà nhóm áp dụng khi thực hiện đề tài / dự án.
+4.10.1 Kế hoạch kiểm thử (Test Plan)
+a. Mục tiêu kiểm thử:
+Mục tiêu của hoạt động kiểm thử là đảm bảo hệ thống Website Quản lý nhân sự IT hoạt động chính xác, ổn định và đáp ứng đầy đủ các yêu cầu đã đề ra. Đặc biệt, hệ thống cần đảm bảo:
+Tính chính xác của các chức năng tính lương, thuế và bảo hiểm.
+Tính bảo mật dữ liệu nhân sự và lương thưởng.
+Khả năng tích hợp ổn định với các hệ thống bên thứ ba như Google Calendar, Gmail và Banking API.
+b. Phạm vi kiểm thử
+Phạm vi kiểm thử bao gồm toàn bộ các module chính của hệ thống:
+Module Quản lý lương và phúc lợi
+Module Tuyển dụng và Đào tạo
+Module Quản lý công việc và hồ sơ
+Module phân quyền và bảo mật (RBAC)
+Các chức năng tích hợp API bên thứ ba
+c. Chiến lược kiểm thử (Test Strategy)
+Nhóm áp dụng kết hợp nhiều loại kiểm thử để đảm bảo chất lượng hệ thống:
+Unit Testing: Kiểm thử từng hàm riêng lẻ, đặc biệt là các hàm tính lương, thuế, bảo hiểm.
+Integration Testing: Kiểm thử sự tương tác giữa các module và API bên ngoài (Google, Banking).
+System Testing: Kiểm thử toàn bộ hệ thống theo các luồng nghiệp vụ thực tế.
+Security Testing: Kiểm tra cơ chế phân quyền, xác thực người dùng và bảo vệ dữ liệu.
+User Acceptance Testing (UAT): Đánh giá hệ thống dựa trên góc nhìn người dùng cuối.
+d. Môi trường kiểm thử (Test Environment)
+Hệ điều hành: Windows 10
+Trình duyệt: Google Chrome, Microsoft Edge
+Backend: ASP.NET Core
+Cơ sở dữ liệu: SQL Server
+Môi trường chạy thử: Localhost
+e. Công cụ kiểm thử (Test Tools)
+Postman: Kiểm thử API
+Selenium (hoặc tương đương): Kiểm thử giao diện tự động
+SQL Server Management Studio (SSMS): Kiểm tra dữ liệu
+Jira / Trello: Quản lý lỗi và theo dõi tiến độ
+f. Nhân sự kiểm thử
+Tester chính: Đào Minh Nhựt
+Hỗ trợ kiểm thử: Các thành viên trong nhóm
+Project Manager chịu trách nhiệm giám sát và đánh giá kết quả kiểm thử
+4.10.2 Quy trình kiểm thử (Test Process)
+Nhóm áp dụng quy trình kiểm thử theo các bước sau:
+Bước 1: Lập kế hoạch kiểm thử (Test Planning)
+Xác định mục tiêu, phạm vi, phương pháp kiểm thử và phân công nhiệm vụ cho từng thành viên.
+Bước 2: Thiết kế kiểm thử (Test Design)
+Xây dựng các Test Case dựa trên yêu cầu hệ thống và Use Case.
+Xác định dữ liệu kiểm thử phù hợp cho từng chức năng.
+Bước 3: Thực thi kiểm thử (Test Execution)
+Tiến hành chạy các Test Case đã thiết kế.
+Ghi nhận kết quả thực tế và so sánh với kết quả mong đợi.
+Bước 4: Báo lỗi và theo dõi (Bug Reporting & Tracking)
+Các lỗi phát hiện được ghi nhận vào hệ thống quản lý (Jira/Trello).
+Phân loại mức độ lỗi (Nghiêm trọng, Trung bình, Nhẹ).
+Theo dõi quá trình sửa lỗi và kiểm tra lại (Re-test).
+Bước 5: Kết thúc kiểm thử (Test Closure)
+Tổng hợp kết quả kiểm thử.
+Đánh giá chất lượng hệ thống.
+Xác nhận hệ thống sẵn sàng để bàn giao.
+4.10.3 Tiêu chí đánh giá kết quả kiểm thử
+Hệ thống được xem là đạt yêu cầu khi:
+Tất cả các chức năng chính hoạt động đúng theo yêu cầu.
+Không còn lỗi nghiêm trọng (Critical/High).
+Dữ liệu tính toán (lương, thuế) chính xác tuyệt đối.
+Hệ thống đảm bảo phân quyền và bảo mật thông tin.
+Hiệu năng đáp ứng yêu cầu (thời gian xử lý nhanh, ổn định).
+4.11 Nêu một số rủi ro, khó khăn có thể gặp phải trong quá trình thực hiện đề tài / dự án.
+1 số rủi ro gặp phải trong quá trình thực hiện dự án:
+Rủi ro về thay đổi yêu cầu
+Trong quá trình thực hiện dự án, yêu cầu của hệ thống có thể thay đổi hoặc được bổ sung thêm so với ban đầu. Điều này có thể làm ảnh hưởng đến kế hoạch phát triển, tiến độ thực hiện cũng như khối lượng công việc của các thành viên trong nhóm. Nếu không quản lý tốt việc thay đổi yêu cầu, dự án có thể gặp tình trạng phải chỉnh sửa nhiều lần, gây chậm tiến độ và ảnh hưởng đến chất lượng sản phẩm.
+ Rủi ro về tiến độ thực hiện
+Một số công việc trong dự án có thể mất nhiều thời gian hơn so với dự kiến ban đầu. Nguyên nhân có thể do việc ước lượng thời gian chưa chính xác hoặc do phát sinh các vấn đề trong quá trình thực hiện. Điều này có thể dẫn đến việc chậm tiến độ của các công việc tiếp theo và ảnh hưởng đến thời gian hoàn thành toàn bộ dự án.
+Rủi ro về sự phối hợp giữa các thành viên
+Dự án được thực hiện bởi nhiều thành viên với các nhiệm vụ khác nhau. Nếu việc trao đổi thông tin và phối hợp giữa các thành viên không hiệu quả, có thể xảy ra tình trạng hiểu sai yêu cầu hoặc thực hiện công việc không đồng bộ. Điều này có thể dẫn đến việc phải chỉnh sửa lại các phần đã thực hiện hoặc gây khó khăn trong quá trình tích hợp hệ thống.
+Rủi ro về phân công công việc không hợp lý
+Nếu việc phân công công việc giữa các thành viên không cân bằng, một số thành viên có thể phải thực hiện quá nhiều nhiệm vụ trong khi các thành viên khác lại có khối lượng công việc ít hơn. Điều này có thể làm giảm hiệu quả làm việc của nhóm và ảnh hưởng đến tiến độ của dự án.
+Rủi ro về chất lượng sản phẩm
+Nếu quá trình kiểm thử không được thực hiện đầy đủ hoặc không phát hiện kịp thời các lỗi của hệ thống, sản phẩm cuối cùng có thể chưa đạt được chất lượng như mong muốn. Do đó, việc thực hiện kiểm thử và rà soát hệ thống trong quá trình phát triển là rất cần thiết để đảm bảo chất lượng của dự án.
+1 số khó khăn gặp phải trong quá trình thực hiện dự án:
+Khó khăn trong việc quản lý thời gian của các thành viên
+Do các thành viên trong nhóm đều là sinh viên và phải tham gia nhiều môn học khác nhau, việc sắp xếp thời gian để cùng làm việc và trao đổi về dự án có thể gặp nhiều khó khăn. Điều này có thể làm ảnh hưởng đến tiến độ thực hiện một số công việc nếu không có kế hoạch làm việc hợp lý.
+Khó khăn trong việc trao đổi và thống nhất ý tưởng
+Trong quá trình thực hiện dự án, các thành viên trong nhóm có thể có những quan điểm hoặc ý tưởng khác nhau về cách thực hiện một số chức năng của hệ thống. Việc thảo luận để thống nhất phương án phù hợp đôi khi mất nhiều thời gian và có thể làm chậm quá trình ra quyết định.
+ Khó khăn trong việc ước lượng khối lượng công việc
+Đối với các dự án phần mềm, việc ước lượng thời gian và khối lượng công việc ban đầu đôi khi chưa chính xác do chưa lường trước được hết các vấn đề phát sinh. Điều này có thể dẫn đến việc phải điều chỉnh lại kế hoạch hoặc tiến độ của dự án trong quá trình thực hiện.
+Khó khăn trong quá trình phối hợp giữa các phần của hệ thống
+Dự án được thực hiện theo nhiều phần công việc khác nhau như phân tích, thiết kế, phát triển và kiểm thử. Trong quá trình tích hợp các phần này lại với nhau, nhóm có thể gặp khó khăn trong việc đảm bảo các chức năng hoạt động đồng bộ và đúng theo yêu cầu ban đầu.
+Khó khăn trong việc làm quen với các công cụ quản lý dự án
+Nhóm sử dụng công cụ quản lý dự án để theo dõi và phân công công việc. Tuy nhiên, trong giai đoạn đầu, các thành viên có thể chưa quen với cách sử dụng các công cụ này, dẫn đến việc cập nhật tiến độ hoặc quản lý task chưa thực sự hiệu quả.
+4.12 Nêu một số kinh nghiệm rút ra từ quá trình thực hiện đề tài / dự án.
+Sau quá trình nghiên cứu, lập kế hoạch và triển khai dự án "Xây dựng Website Quản lý nhân sự IT", nhóm đã rút ra được những kinh nghiệm quý báu sau:
+Xác định phạm vi và lập kế hoạch rõ ràng ngay từ đầu:
+Việc xây dựng các tài liệu như Project Charter và Scope Statement ngay từ giai đoạn khởi đầu giúp nhóm xác định rõ mục tiêu, phạm vi và các chức năng chính của hệ thống. Nhờ đó, nhóm có thể tập trung vào những yêu cầu cốt lõi của dự án, hạn chế việc phát sinh thêm các yêu cầu không cần thiết trong quá trình thực hiện và kiểm soát tốt hơn tiến độ chung của dự án.
+Phân rã công việc và quản lý tiến độ hiệu quả:
+Thông qua việc xây dựng cấu trúc phân rã công việc (WBS), dự án cần  được chia thành các gói công việc nhỏ và dễ quản lý hơn. Việc áp dụng các công cụ lập kế hoạch tiến độ như sơ đồ PERT/CPM giúp nhóm xác định được các công việc quan trọng và mối quan hệ phụ thuộc giữa chúng. Nhờ đó, nhóm có thể ưu tiên nguồn lực cho những nhiệm vụ quan trọng nhằm đảm bảo dự án được thực hiện đúng kế hoạch.
+Chủ động nhận diện và quản lý rủi ro trong quá trình thực hiện:
+Trong quá trình phát triển dự án, việc tích hợp các dịch vụ hoặc công nghệ bên ngoài có thể phát sinh nhiều vấn đề ngoài dự kiến. Từ kinh nghiệm thực hiện dự án, nhóm nhận thấy rằng việc nghiên cứu kỹ tài liệu hướng dẫn và chuẩn bị các phương án xử lý từ sớm sẽ giúp giảm thiểu rủi ro và hạn chế ảnh hưởng đến tiến độ của dự án.
+Tăng cường sự phối hợp và phân công công việc hợp lý trong nhóm:
+Việc phân chia nhiệm vụ dựa trên năng lực và vai trò của từng thành viên giúp quá trình thực hiện dự án diễn ra hiệu quả hơn. Đồng thời, việc trao đổi thông tin thường xuyên giữa các thành viên giúp nhóm nhanh chóng phát hiện và giải quyết các vấn đề phát sinh, đảm bảo các phần công việc được thực hiện đồng bộ và thống nhất.
