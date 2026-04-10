@@ -2,7 +2,12 @@ import EmployeeDirectory from './components/EmployeeDirectory.js';
 import UnifiedTaskForm from './components/UnifiedTaskForm.js';
 import EmployeeAttendance from './components/EmployeeAttendance.js';
 import EmployeeTasks from './components/EmployeeTasks.js';
-import SalaryManagement from './components/SalaryManagement.js';
+import HomePage from './components/HomePage.js';
+import AboutPage from './components/AboutPage.js';
+import HRDashboard from './components/HRDashboard.js';
+import DashboardWidget from './components/DashboardWidget.js';
+import HeaderFooter from './components/Header.js';
+// import SalaryManagement from './components/SalaryManagement.js';
 
 // Bước 1: Khởi tạo State toàn cục
 window.appState = {
@@ -15,9 +20,14 @@ window.appState = {
 // Check if user is already logged-in (from localStorage)
 const savedToken = localStorage.getItem('jwt');
 const savedUser = localStorage.getItem('user');
-if (savedToken && savedUser) {
-    window.appState.token = savedToken;
-    window.appState.user = JSON.parse(savedUser);
+if (savedToken && savedUser && savedUser !== 'undefined') {
+    try {
+        window.appState.token = savedToken;
+        window.appState.user = JSON.parse(savedUser);
+    } catch (e) {
+        console.log('Failed to parse saved user:', e);
+        localStorage.clear();
+    }
 }
 
 // Bước 2: Cache DOM
@@ -51,55 +61,90 @@ export async function apiFetch(url, options = {}) {
     return fetch(url, { ...options, headers });
 }
 
+// === Routing ===
+function renderPage(page) {
+    const container = DOM.appContainer;
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    // Render header + content for authenticated pages
+    if (page === 'dashboard' || page === 'profile') {
+        HeaderFooter.render(container, page);
+    } else {
+        // For public pages (home, about), still show header
+        HeaderFooter.render(container, page);
+    }
+}
+
+// Global navigation function - called by Header component listeners
+window.navigate = function(route) {
+    window.appState.currentPage = route;
+    const container = DOM.appContainer;
+    if (!container) return;
+    
+    // Show app screen, hide auth screen
+    if (DOM.appScreen) DOM.appScreen.classList.remove('hidden');
+    if (DOM.authScreen) DOM.authScreen.classList.add('hidden');
+    
+    if (route === 'login') {
+        // Show login screen
+        if (DOM.authScreen) DOM.authScreen.classList.remove('hidden');
+        if (DOM.appScreen) DOM.appScreen.classList.add('hidden');
+        return;
+    }
+    
+    // Render header
+    container.innerHTML = '';
+    HeaderFooter.render(container);
+    
+    // Render page content
+    const contentDiv = document.getElementById('page-content');
+    if (contentDiv) {
+        if (route === 'home') {
+            HomePage.render(contentDiv);
+        } else if (route === 'about') {
+            AboutPage.render(contentDiv);
+        } else if (route === 'dashboard') {
+            // Role-based dashboard routing
+            const userRole = window.appState.user?.Role || window.appState.user?.role;
+            console.log('=== Dashboard routing ===');
+            console.log('Full user object:', JSON.stringify(window.appState.user, null, 2));
+            console.log('User Role (PascalCase):', window.appState.user?.Role);
+            console.log('User role (camelCase):', window.appState.user?.role);
+            console.log('Final userRole variable:', userRole);
+            console.log('Is HR?', userRole === 'HR');
+            
+            if (userRole === 'HR') {
+                console.log('✓ Routing to HRDashboard');
+                HRDashboard.render(contentDiv);
+            } else {
+                console.log('✓ Routing to DashboardWidget for role:', userRole);
+                // For other roles (QuanLy, KeToan, NhanVien), show DashboardWidget
+                DashboardWidget.render(contentDiv);
+            }
+        } else {
+            HomePage.render(contentDiv);
+        }
+    }
+};
+
+window.navigateTo = function(route) {
+    window.navigate(route);
+};
+
+function navigateToDashboard() {
+    window.navigate('dashboard');
+}
+
 // === Auth ===
 function initAuth() {
     if (window.appState.token && window.appState.user) {
-        DOM.authScreen.classList.add('hidden');
-        DOM.appScreen.classList.remove('hidden');
-        DOM.userLabel.textContent = window.appState.user.hoTen;
-        
-        // Render navigation based on Role
-        if (window.appState.user.role === 'QuanLy') {
-            DOM.mainNav.innerHTML = `
-                <button data-tab="employees" class="tab-btn">
-                    <i class="fa-solid fa-users text-xs"></i> Nhân viên
-                </button>
-                <button data-tab="workspace" class="tab-btn">
-                    <i class="fa-solid fa-pen-ruler text-xs"></i> Phân công
-                </button>
-            `;
-            if (!['employees', 'workspace'].includes(window.appState.currentTab)) {
-                window.appState.currentTab = 'employees';
-            }
-        } else if (window.appState.user.role === 'KeToan') {
-            DOM.mainNav.innerHTML = `
-                <button data-tab="salary" class="tab-btn">
-                    <i class="fa-solid fa-money-bill-wave text-xs"></i> Quản lý Lương
-                </button>
-            `;
-            window.appState.currentTab = 'salary';
-        } else {
-            DOM.mainNav.innerHTML = `
-                <button data-tab="attendance" class="tab-btn">
-                    <i class="fa-solid fa-clock text-xs"></i> Chấm công
-                </button>
-                <button data-tab="mytasks" class="tab-btn">
-                    <i class="fa-solid fa-list-check text-xs"></i> Công việc của tôi
-                </button>
-                <button data-tab="salary" class="tab-btn">
-                    <i class="fa-solid fa-money-bill-wave text-xs"></i> Lương
-                </button>
-            `;
-            if (!['attendance', 'mytasks', 'salary'].includes(window.appState.currentTab)) {
-                window.appState.currentTab = 'attendance';
-            }
-        }
-        
-        setupTabs();
-        switchTab(window.appState.currentTab);
+        // Đã đăng nhập → vào dashboard
+        navigateToDashboard();
     } else {
-        DOM.authScreen.classList.remove('hidden');
-        DOM.appScreen.classList.add('hidden');
+        // Chưa đăng nhập → vào trang chủ
+        navigateTo('home');
     }
 }
 
@@ -121,11 +166,15 @@ DOM.loginForm.addEventListener('submit', async (e) => {
             body: JSON.stringify({ email, password })
         });
         const data = await res.json();
+        console.log('Login response:', data);
         if (res.ok) {
+            const user = data.User || data.user; // Handle both cases
             localStorage.setItem('jwt', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
+            localStorage.setItem('user', JSON.stringify(user));
             window.appState.token = data.token;
-            window.appState.user = data.user;
+            window.appState.user = user;
+            console.log('User saved to appState:', window.appState.user);
+            console.log('User Role field:', user?.Role, 'User role field:', user?.role);
             showToast('Đăng nhập thành công');
             navigateTo('dashboard');
         } else {
@@ -136,13 +185,18 @@ DOM.loginForm.addEventListener('submit', async (e) => {
 });
 
 // Bước 4: Logout
-DOM.logoutBtn.addEventListener('click', () => {
-    localStorage.clear();
-    window.appState = { user: null, token: null, currentTab: 'employees' };
-    initAuth();
-});
+const logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        localStorage.clear();
+        window.appState = { user: null, token: null, currentTab: 'employees' };
+        initAuth();
+    });
+}
 
-// === Tab Navigation ===
+// === Tab Navigation (OLD - DEPRECATED) ===
+// Dùng navigateTo() từ new routing system
+/*
 function setupTabs() {
     DOM.mainNav.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', () => switchTab(btn.dataset.tab));
@@ -151,11 +205,9 @@ function setupTabs() {
 
 export function switchTab(tab) {
     window.appState.currentTab = tab;
-    // Update active style
     DOM.mainNav.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.toggle('tab-active', btn.dataset.tab === tab);
     });
-    // Render component
     DOM.viewOutlet.innerHTML = '';
     DOM.viewOutlet.classList.add('fade-in');
     
@@ -163,9 +215,9 @@ export function switchTab(tab) {
     else if (tab === 'workspace') UnifiedTaskForm.render(DOM.viewOutlet);
     else if (tab === 'attendance') EmployeeAttendance.render(DOM.viewOutlet);
     else if (tab === 'mytasks') EmployeeTasks.render(DOM.viewOutlet);
-    else if (tab === 'salary') SalaryManagement.render(DOM.viewOutlet);
     
     setTimeout(() => DOM.viewOutlet.classList.remove('fade-in'), 300);
 }
+*/
 
 document.addEventListener('DOMContentLoaded', initAuth);

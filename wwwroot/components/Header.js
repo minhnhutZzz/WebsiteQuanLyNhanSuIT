@@ -42,7 +42,7 @@ export default class HeaderFooter {
                                 <div class="flex items-center gap-3 border-l border-surface-200 pl-4">
                                     <button id="header-profile-btn" class="flex items-center gap-2 text-sm font-medium text-surface-700 hover:text-primary-500 transition">
                                         <i class="fa-solid fa-user-circle text-lg"></i>
-                                        <span class="hidden sm:inline">${user.hoTen || 'Người dùng'}</span>
+                                        <span class="hidden sm:inline">${user.hoTen || user.HoTen || 'Người dùng'}</span>
                                     </button>
                                     <button id="header-logout-btn" class="text-sm text-surface-400 hover:text-red-500 transition-colors">
                                         <i class="fa-solid fa-right-from-bracket text-lg"></i>

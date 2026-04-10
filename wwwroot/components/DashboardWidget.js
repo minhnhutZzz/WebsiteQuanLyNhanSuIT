@@ -28,7 +28,21 @@ const DashboardWidget = {
         }
 
         // Bước 3: Render giao diện Dashboard với dữ liệu thực
+        const userRole = window.appState?.user?.Role || window.appState?.user?.role || 'Unknown';
+        const roleDisplay = {
+            'QuanLy': 'Quản Lý',
+            'KeToan': 'Kế Toán',
+            'NhanVien': 'Nhân Viên',
+            'HR': 'HR'
+        }[userRole] || userRole;
+
         container.innerHTML = `
+            <!-- Role Header -->
+            <div class="mb-8">
+                <h1 class="text-4xl font-bold text-surface-900 mb-2">Dashboard Tổng Quan</h1>
+                <p class="text-lg text-primary-600">Vai trò: <span class="font-semibold">${roleDisplay}</span></p>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div class="widget-card bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between">
                     <div>

@@ -260,7 +260,7 @@ namespace HRManagement.Controllers
                             var interviewObj = JsonSerializer.Deserialize<Dictionary<string, object>>(item.GetRawText(), options) 
                                 ?? new Dictionary<string, object>();
                             
-                            if (interviewObj.ContainsKey("id") && interviewObj["id"]?.ToString() == id)
+                            if (interviewObj != null && interviewObj.ContainsKey("id") && interviewObj["id"]?.ToString() == id)
                             {
                                 // Update
                                 interviewObj["title"] = request.Title;
