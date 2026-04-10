@@ -5,9 +5,8 @@ import EmployeeTasks from './components/EmployeeTasks.js';
 import HomePage from './components/HomePage.js';
 import AboutPage from './components/AboutPage.js';
 import HRDashboard from './components/HRDashboard.js';
-import DashboardWidget from './components/DashboardWidget.js';
+import SalaryManagement from './components/SalaryManagement.js';
 import HeaderFooter from './components/Header.js';
-// import SalaryManagement from './components/SalaryManagement.js';
 
 // Bước 1: Khởi tạo State toàn cục
 window.appState = {
@@ -107,22 +106,72 @@ window.navigate = function(route) {
             AboutPage.render(contentDiv);
         } else if (route === 'dashboard') {
             // Role-based dashboard routing
-            const userRole = window.appState.user?.Role || window.appState.user?.role;
-            console.log('=== Dashboard routing ===');
-            console.log('Full user object:', JSON.stringify(window.appState.user, null, 2));
-            console.log('User Role (PascalCase):', window.appState.user?.Role);
-            console.log('User role (camelCase):', window.appState.user?.role);
-            console.log('Final userRole variable:', userRole);
-            console.log('Is HR?', userRole === 'HR');
+            const userRole = window.appState.user?.role || window.appState.user?.Role;
+            console.log('Dashboard routing - Role:', userRole);
             
             if (userRole === 'HR') {
-                console.log('✓ Routing to HRDashboard');
                 HRDashboard.render(contentDiv);
+            } else if (userRole === 'QuanLy') {
+                EmployeeDirectory.render(contentDiv);
+            } else if (userRole === 'KeToan') {
+                SalaryManagement.render(contentDiv);
             } else {
-                console.log('✓ Routing to DashboardWidget for role:', userRole);
-                // For other roles (QuanLy, KeToan, NhanVien), show DashboardWidget
-                DashboardWidget.render(contentDiv);
+                // NhanVien - show attendance by default
+                EmployeeAttendance.render(contentDiv);
             }
+        } else if (route === 'profile') {
+            // Show user profile
+            const user = window.appState.user;
+            const roles = { 'HR': 'HR Manager', 'QuanLy': 'Quản Lý', 'KeToan': 'Kế Toán', 'NhanVien': 'Nhân Viên' };
+            const roleDisplay = roles[user?.role || user?.Role] || 'Nhân Viên';
+            contentDiv.innerHTML = `
+                <div class="max-w-4xl mx-auto">
+                    <div class="mb-8">
+                        <h1 class="text-4xl font-bold text-surface-900 mb-2">Hồ Sơ Cá Nhân</h1>
+                        <p class="text-lg text-surface-600">Quản lý thông tin tài khoản của bạn</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                        <div class="space-y-6">
+                            <div class="flex items-center gap-8">
+                                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
+                                    <i class="fa-solid fa-user text-white text-5xl"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-3xl font-bold text-surface-900 mb-2">${user?.HoTen || user?.hoTen || 'Người dùng'}</h2>
+                                    <p class="text-lg text-primary-600 font-semibold">${roleDisplay}</p>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-gray-200 pt-6">
+                                <h3 class="text-xl font-bold text-surface-900 mb-4">Thông Tin Chi Tiết</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-surface-600 mb-2">Mã Nhân Viên</label>
+                                        <p class="text-lg text-surface-800 bg-surface-50 px-4 py-2 rounded-lg">${user?.MaNV || user?.maNV || '-'}</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-surface-600 mb-2">Email</label>
+                                        <p class="text-lg text-surface-800 bg-surface-50 px-4 py-2 rounded-lg">${user?.Email || user?.email || '-'}</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-surface-600 mb-2">Trạng Thái</label>
+                                        <p class="text-lg text-green-700 font-semibold px-4 py-2 rounded-lg bg-green-50">${user?.TrangThai || user?.trangThai || 'Đang làm'}</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-surface-600 mb-2">Vai Trò</label>
+                                        <p class="text-lg text-primary-700 font-semibold px-4 py-2 rounded-lg bg-primary-50">${roleDisplay}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-gray-200 pt-6 text-center">
+                                <button onclick="window.navigate('dashboard')" class="btn-primary">Quay Lại Dashboard</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
         } else {
             HomePage.render(contentDiv);
         }
@@ -173,10 +222,9 @@ DOM.loginForm.addEventListener('submit', async (e) => {
             localStorage.setItem('user', JSON.stringify(user));
             window.appState.token = data.token;
             window.appState.user = user;
-            console.log('User saved to appState:', window.appState.user);
-            console.log('User Role field:', user?.Role, 'User role field:', user?.role);
             showToast('Đăng nhập thành công');
-            navigateTo('dashboard');
+            // Direct navigate to dashboard after login (skip home page)
+            window.navigate('dashboard');
         } else {
             showToast(data.message || 'Sai thông tin đăng nhập', 'error');
         }
