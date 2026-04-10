@@ -4,7 +4,7 @@ const SalaryManagement = {
     async render(container) {
         const role = window.appState.user?.role;
         const maNV = window.appState.user?.maNV;
-        const isKeToanOrQuanLy = role === 'KeToan' || role === 'QuanLy';
+        const isKeToan = role === 'KeToan';
 
         container.innerHTML = `
             <div class="fade-in">
@@ -16,10 +16,10 @@ const SalaryManagement = {
                             Quản lý Lương
                         </h2>
                         <p class="text-sm text-surface-500 mt-1">
-                            ${isKeToanOrQuanLy ? 'Lập bảng lương, chi trả và tra cứu lương nhân viên' : 'Xem bảng lương cá nhân'}
+                            ${isKeToan ? 'Lập bảng lương, chi trả và tra cứu lương nhân viên' : 'Xem bảng lương cá nhân'}
                         </p>
                     </div>
-                    ${isKeToanOrQuanLy ? `
+                    ${isKeToan ? `
                         <button id="btn-toggle-form" class="btn-primary">
                             <i class="fa-solid fa-plus text-xs"></i> Lập bảng lương
                         </button>
@@ -27,7 +27,7 @@ const SalaryManagement = {
                 </div>
 
                 <!-- Form lập bảng lương (chỉ hiện cho KeToan/QuanLy) -->
-                ${isKeToanOrQuanLy ? `
+                ${isKeToan ? `
                 <div id="salary-form-wrapper" class="card mb-6 hidden salary-form-slide">
                     <div class="flex items-center justify-between mb-5">
                         <h3 class="text-base font-semibold text-surface-800">
@@ -84,7 +84,7 @@ const SalaryManagement = {
                 <!-- Bộ lọc & Tìm kiếm -->
                 <div class="card mb-4">
                     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                        ${isKeToanOrQuanLy ? `
+                        ${isKeToan ? `
                         <div class="flex-1 relative">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-surface-400 text-sm"></i>
                             <input type="text" id="search-maNV" class="input-field pl-9" placeholder="Nhập mã NV để tra cứu...">
@@ -115,7 +115,7 @@ const SalaryManagement = {
                     <div id="salary-table-wrapper">
                         <div class="text-center py-12 text-surface-400">
                             <i class="fa-solid fa-file-invoice text-3xl mb-3 block"></i>
-                            <p class="text-sm">${isKeToanOrQuanLy ? 'Nhập mã nhân viên và nhấn Tra cứu để xem bảng lương' : 'Đang tải dữ liệu...'}</p>
+                            <p class="text-sm">${isKeToan ? 'Nhập mã nhân viên và nhấn Tra cứu để xem bảng lương' : 'Đang tải dữ liệu...'}</p>
                         </div>
                     </div>
                 </div>
@@ -139,17 +139,17 @@ const SalaryManagement = {
         `;
 
         // Bind events
-        this._bindEvents(isKeToanOrQuanLy, maNV);
+        this._bindEvents(isKeToan, maNV);
 
         // Auto-load cho NhanVien
-        if (!isKeToanOrQuanLy) {
+        if (!isKeToan) {
             this._loadSalary(maNV);
         }
     },
 
-    _bindEvents(isKeToanOrQuanLy, maNV) {
+    _bindEvents(isKeToan, maNV) {
         // Toggle form
-        if (isKeToanOrQuanLy) {
+        if (isKeToan) {
             const toggleBtn = document.getElementById('btn-toggle-form');
             const formWrapper = document.getElementById('salary-form-wrapper');
             const closeBtn = document.getElementById('btn-close-form');
@@ -180,7 +180,7 @@ const SalaryManagement = {
 
         // Search / Tra cứu
         document.getElementById('btn-search')?.addEventListener('click', () => {
-            if (isKeToanOrQuanLy) {
+            if (isKeToan) {
                 const searchMaNV = document.getElementById('search-maNV')?.value.trim();
                 if (!searchMaNV) {
                     showToast('Vui lòng nhập mã nhân viên', 'error');
@@ -203,7 +203,7 @@ const SalaryManagement = {
         document.getElementById('filter-status')?.addEventListener('change', () => {
             // Re-render table with current data
             if (this._currentData) {
-                this._renderTable(this._currentData, isKeToanOrQuanLy);
+                this._renderTable(this._currentData, isKeToan);
             }
         });
     },
@@ -277,8 +277,8 @@ const SalaryManagement = {
             const records = data.data || [];
             this._currentData = records;
 
-            const isKeToanOrQuanLy = window.appState.user?.role === 'KeToan' || window.appState.user?.role === 'QuanLy';
-            this._renderTable(records, isKeToanOrQuanLy);
+            const isKeToan = window.appState.user?.role === 'KeToan';
+            this._renderTable(records, isKeToan);
             this._updateStats(records);
         } catch (err) {
             wrapper.innerHTML = `
@@ -290,7 +290,7 @@ const SalaryManagement = {
         }
     },
 
-    _renderTable(records, isKeToanOrQuanLy) {
+    _renderTable(records, isKeToan) {
         const wrapper = document.getElementById('salary-table-wrapper');
         const filterStatus = document.getElementById('filter-status')?.value;
 
@@ -326,7 +326,7 @@ const SalaryManagement = {
                         <th class="text-right">Thuế TNCN</th>
                         <th class="text-right">Thực lãnh</th>
                         <th>Trạng thái</th>
-                        ${isKeToanOrQuanLy ? '<th class="text-center">Thao tác</th>' : ''}
+                        ${isKeToan ? '<th class="text-center">Thao tác</th>' : ''}
                     </tr>
                 </thead>
                 <tbody>
@@ -346,7 +346,7 @@ const SalaryManagement = {
                                     ${r.trangThai === 'DaThanhToan' ? 'Đã TT' : 'Chưa TT'}
                                 </span>
                             </td>
-                            ${isKeToanOrQuanLy ? `
+                            ${isKeToan ? `
                             <td class="text-center">
                                 ${r.trangThai === 'ChuaThanhToan' ? `
                                     <button class="btn-pay-salary btn-secondary text-xs" data-id="${r.maBangLuong}">

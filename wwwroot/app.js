@@ -55,7 +55,7 @@ function initAuth() {
         DOM.userLabel.textContent = window.appState.user.hoTen;
         
         // Render navigation based on Role
-        if (window.appState.user.role === 'QuanLy' || window.appState.user.role === 'KeToan') {
+        if (window.appState.user.role === 'QuanLy') {
             DOM.mainNav.innerHTML = `
                 <button data-tab="employees" class="tab-btn">
                     <i class="fa-solid fa-users text-xs"></i> Nhân viên
@@ -63,13 +63,17 @@ function initAuth() {
                 <button data-tab="workspace" class="tab-btn">
                     <i class="fa-solid fa-pen-ruler text-xs"></i> Phân công
                 </button>
-                <button data-tab="salary" class="tab-btn">
-                    <i class="fa-solid fa-money-bill-wave text-xs"></i> Lương
-                </button>
             `;
-            if (!['employees', 'workspace', 'salary'].includes(window.appState.currentTab)) {
+            if (!['employees', 'workspace'].includes(window.appState.currentTab)) {
                 window.appState.currentTab = 'employees';
             }
+        } else if (window.appState.user.role === 'KeToan') {
+            DOM.mainNav.innerHTML = `
+                <button data-tab="salary" class="tab-btn">
+                    <i class="fa-solid fa-money-bill-wave text-xs"></i> Quản lý Lương
+                </button>
+            `;
+            window.appState.currentTab = 'salary';
         } else {
             DOM.mainNav.innerHTML = `
                 <button data-tab="attendance" class="tab-btn">

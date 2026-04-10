@@ -17,7 +17,7 @@ namespace HRManagement.Controllers
         }
 
         [HttpPost("lap-bang")]
-        [Authorize(Roles = "KeToan,QuanLy")]
+        [Authorize(Roles = "KeToan")]
         public IActionResult LapBangLuong([FromBody] LapBangLuongRequest request)
         {
             try
@@ -32,7 +32,7 @@ namespace HRManagement.Controllers
         }
 
         [HttpPut("chi-tra/{maBangLuong}")]
-        [Authorize(Roles = "KeToan,QuanLy")]
+        [Authorize(Roles = "KeToan")]
         public IActionResult ChiTraLuong(string maBangLuong)
         {
             var success = _luongService.ChiTraLuong(maBangLuong);
@@ -50,8 +50,8 @@ namespace HRManagement.Controllers
             var userMaNv = User.FindFirst("MaNV")?.Value;
             var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
 
-            // Kiểm tra phân quyền: Nhân viên chỉ xem của mình, Kế toán/Quản lý xem tất cả
-            if (userRole != "KeToan" && userRole != "QuanLy" && userMaNv != maNv)
+            // Kiểm tra phân quyền: Chỉ Kế toán xem tất cả, nhân viên chỉ xem của mình
+            if (userRole != "KeToan" && userMaNv != maNv)
             {
                 return Forbid();
             }
