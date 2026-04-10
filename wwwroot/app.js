@@ -2,26 +2,31 @@ import EmployeeDirectory from './components/EmployeeDirectory.js';
 import UnifiedTaskForm from './components/UnifiedTaskForm.js';
 import EmployeeAttendance from './components/EmployeeAttendance.js';
 import EmployeeTasks from './components/EmployeeTasks.js';
+import SalaryManagement from './components/SalaryManagement.js';
 
-// Bước 1: Khởi tạo State toàn cục (Xóa session cũ để luôn bắt đầu ở trang đăng nhập)
-localStorage.clear(); // Xóa dữ liệu cũ
-
+// Bước 1: Khởi tạo State toàn cục
 window.appState = {
-    user: null, // Không lấy từ localStorage nữa
+    user: null,
     token: null,
-    currentTab: 'employees'
+    currentTab: 'employees',
+    currentPage: 'home' // Track current page (home, about, dashboard, profile, login)
 };
+
+// Check if user is already logged-in (from localStorage)
+const savedToken = localStorage.getItem('jwt');
+const savedUser = localStorage.getItem('user');
+if (savedToken && savedUser) {
+    window.appState.token = savedToken;
+    window.appState.user = JSON.parse(savedUser);
+}
 
 // Bước 2: Cache DOM
 const DOM = {
     authScreen: document.getElementById('auth-screen'),
     appScreen: document.getElementById('app-screen'),
+    appContainer: document.getElementById('app-container'),
     loginForm: document.getElementById('login-form'),
-    loginBtn: document.getElementById('login-btn'),
-    viewOutlet: document.getElementById('view-outlet'),
-    userLabel: document.getElementById('user-label'),
-    logoutBtn: document.getElementById('logout-btn'),
-    mainNav: document.getElementById('main-nav')
+    loginBtn: document.getElementById('login-btn')
 };
 
 // === Toast ===
@@ -66,6 +71,13 @@ function initAuth() {
             if (!['employees', 'workspace'].includes(window.appState.currentTab)) {
                 window.appState.currentTab = 'employees';
             }
+        } else if (window.appState.user.role === 'KeToan') {
+            DOM.mainNav.innerHTML = `
+                <button data-tab="salary" class="tab-btn">
+                    <i class="fa-solid fa-money-bill-wave text-xs"></i> Quản lý Lương
+                </button>
+            `;
+            window.appState.currentTab = 'salary';
         } else {
             DOM.mainNav.innerHTML = `
                 <button data-tab="attendance" class="tab-btn">
@@ -74,8 +86,11 @@ function initAuth() {
                 <button data-tab="mytasks" class="tab-btn">
                     <i class="fa-solid fa-list-check text-xs"></i> Công việc của tôi
                 </button>
+                <button data-tab="salary" class="tab-btn">
+                    <i class="fa-solid fa-money-bill-wave text-xs"></i> Lương
+                </button>
             `;
-            if (!['attendance', 'mytasks'].includes(window.appState.currentTab)) {
+            if (!['attendance', 'mytasks', 'salary'].includes(window.appState.currentTab)) {
                 window.appState.currentTab = 'attendance';
             }
         }
@@ -88,7 +103,7 @@ function initAuth() {
     }
 }
 
-// Bước 3: Login
+// === Login Handler ===
 DOM.loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('login-email').value;
@@ -112,7 +127,7 @@ DOM.loginForm.addEventListener('submit', async (e) => {
             window.appState.token = data.token;
             window.appState.user = data.user;
             showToast('Đăng nhập thành công');
-            initAuth();
+            navigateTo('dashboard');
         } else {
             showToast(data.message || 'Sai thông tin đăng nhập', 'error');
         }
@@ -148,6 +163,7 @@ export function switchTab(tab) {
     else if (tab === 'workspace') UnifiedTaskForm.render(DOM.viewOutlet);
     else if (tab === 'attendance') EmployeeAttendance.render(DOM.viewOutlet);
     else if (tab === 'mytasks') EmployeeTasks.render(DOM.viewOutlet);
+    else if (tab === 'salary') SalaryManagement.render(DOM.viewOutlet);
     
     setTimeout(() => DOM.viewOutlet.classList.remove('fade-in'), 300);
 }

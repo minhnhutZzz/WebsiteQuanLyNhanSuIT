@@ -2,7 +2,28 @@
    MINIMALIST DESIGN SYSTEM
    =========================== */
 
-body { font-family: 'Inter', sans-serif; }
+* { box-sizing: border-box; }
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+#app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#page-content {
+    flex: 1;
+}
 
 /* --- Input Fields --- */
 .input-field {
@@ -172,3 +193,177 @@ body { font-family: 'Inter', sans-serif; }
 
 /* --- Disabled states --- */
 input:disabled, select:disabled, textarea:disabled, button:disabled { cursor: not-allowed; opacity: 0.6; }
+
+/* ========== HEADER FOOTER STYLES ========== */
+.header-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #495057;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 0.375rem;
+    transition: all 0.2s;
+}
+.header-nav-link:hover {
+    color: #4c6ef5;
+    background: #f0f4ff;
+}
+
+.btn-primary-white {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: #fff;
+    color: #4c6ef5;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-primary-white:hover {
+    background: #f0f4ff;
+    color: #4263eb;
+}
+
+.btn-secondary-white {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: transparent;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: 2px solid #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-secondary-white:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.footer-link {
+    background: none;
+    border: none;
+    color: #adb5bd;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-size: 0.875rem;
+    padding: 0;
+}
+.footer-link:hover {
+    color: #4c6ef5;
+}
+
+/* ========== HOME PAGE STYLES ========== */
+.feature-card {
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.feature-card:hover {
+    border-color: #4c6ef5;
+    box-shadow: 0 4px 12px rgba(76, 110, 245, 0.1);
+    transform: translateY(-4px);
+}
+
+.feature-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.benefit-item {
+    text-align: center;
+    padding: 1.5rem;
+}
+.benefit-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    background: #4c6ef5;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+.role-card {
+    background: #fff;
+    border: 2px solid #e9ecef;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.role-card:hover {
+    border-color: #4c6ef5;
+    box-shadow: 0 8px 16px rgba(76, 110, 245, 0.15);
+}
+
+.role-icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+/* ========== ABOUT PAGE STYLES ========== */
+.value-card {
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.value-card:hover {
+    border-color: #4c6ef5;
+    box-shadow: 0 4px 12px rgba(76, 110, 245, 0.1);
+}
+
+.value-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    background: #f0f4ff;
+    color: #4c6ef5;
+    font-size: 1.5rem;
+    border-radius: 0.75rem;
+}
+
+.feature-list-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.9375rem;
+    color: #495057;
+    line-height: 1.625;
+}
