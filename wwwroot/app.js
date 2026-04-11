@@ -183,12 +183,13 @@ window.navigate = async function(route) {
             if (userRole === 'HR') {
                 HRDashboard.render(contentDiv);
             } else if (userRole === 'QuanLy') {
-                EmployeeDirectory.render(contentDiv);
+                // QuanLy has tabs: employees, workspace
+                createDashboardWithTabs(contentDiv, 'QuanLy');
             } else if (userRole === 'KeToan') {
                 SalaryManagement.render(contentDiv);
             } else {
-                // NhanVien - show attendance by default
-                EmployeeAttendance.render(contentDiv);
+                // NhanVien has tabs: attendance, mytasks, salary
+                createDashboardWithTabs(contentDiv, 'NhanVien');
             }
         } else if (route === 'profile') {
             // Show user profile
@@ -311,6 +312,84 @@ DOM.loginForm.addEventListener('submit', async (e) => {
     finally { btn.innerHTML = orig; btn.disabled = false; }
 });
 
+// === Dashboard with Tabs ===
+function createDashboardWithTabs(container, role) {
+    container.innerHTML = '';
+    
+    // Create tabs container
+    const tabsContainer = document.createElement('div');
+    tabsContainer.className = 'flex gap-2 border-b border-surface-200 mb-6 overflow-x-auto';
+    
+    let tabs = [];
+    if (role === 'QuanLy') {
+        tabs = [
+            { id: 'employees', label: 'Nhân viên', icon: 'fa-users' },
+            { id: 'workspace', label: 'Phân công', icon: 'fa-pen-ruler' }
+        ];
+        window.appState.currentTab = 'employees';
+    } else if (role === 'NhanVien') {
+        tabs = [
+            { id: 'attendance', label: 'Chấm công', icon: 'fa-clock' },
+            { id: 'mytasks', label: 'Công việc của tôi', icon: 'fa-list-check' },
+            { id: 'salary', label: 'Lương', icon: 'fa-money-bill-wave' }
+        ];
+        window.appState.currentTab = 'attendance';
+    }
+    
+    tabs.forEach(tab => {
+        const btn = document.createElement('button');
+        btn.className = `tab-btn px-4 py-2 border-b-2 font-medium transition ${window.appState.currentTab === tab.id ? 'border-primary-500 text-primary-600' : 'border-transparent text-surface-600 hover:text-primary-500'}`;
+        btn.innerHTML = `<i class="fa-solid ${tab.icon} mr-2"></i>${tab.label}`;
+        btn.onclick = () => switchDashboardTab(tab.id, container, role);
+        tabsContainer.appendChild(btn);
+    });
+    
+    container.appendChild(tabsContainer);
+    
+    // Content container
+    const contentDiv = document.createElement('div');
+    contentDiv.id = 'dashboard-content';
+    container.appendChild(contentDiv);
+    
+    // Render initial tab
+    switchDashboardTab(window.appState.currentTab, container, role);
+}
+
+function switchDashboardTab(tabId, container, role) {
+    window.appState.currentTab = tabId;
+    const contentDiv = container.querySelector('#dashboard-content');
+    if (!contentDiv) return;
+    
+    contentDiv.innerHTML = '';
+    
+    // Update tab styles
+    container.querySelectorAll('.tab-btn').forEach(btn => {
+        if (btn.textContent.includes(getTabLabel(tabId))) {
+            btn.className = `tab-btn px-4 py-2 border-b-2 font-medium transition border-primary-500 text-primary-600`;
+        } else {
+            btn.className = `tab-btn px-4 py-2 border-b-2 font-medium transition border-transparent text-surface-600 hover:text-primary-500`;
+        }
+    });
+    
+    // Render component
+    if (tabId === 'employees') EmployeeDirectory.render(contentDiv);
+    else if (tabId === 'workspace') UnifiedTaskForm.render(contentDiv);
+    else if (tabId === 'attendance') EmployeeAttendance.render(contentDiv);
+    else if (tabId === 'mytasks') EmployeeTasks.render(contentDiv);
+    else if (tabId === 'salary') SalaryManagement.render(contentDiv);
+}
+
+function getTabLabel(tabId) {
+    const labels = {
+        employees: 'Nhân viên',
+        workspace: 'Phân công',
+        attendance: 'Chấm công',
+        mytasks: 'Công việc của tôi',
+        salary: 'Lương'
+    };
+    return labels[tabId] || '';
+}
+
 // === Back to Home from Login ===
 // (Event listeners attached in window.navigate() when login route is triggered)
 
@@ -320,7 +399,7 @@ if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
         localStorage.clear();
         window.appState = { user: null, token: null, currentTab: 'employees' };
-        initAuth();
+        window.navigate('login');
     });
 }
 
