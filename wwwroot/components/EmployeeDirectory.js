@@ -108,8 +108,8 @@ const EmployeeDirectory = {
             const keyword = searchInput.value.toLowerCase();
             const status = filterSelect.value;
             const filtered = employees.filter(emp => {
-                const matchName = emp.hoTen.toLowerCase().includes(keyword) || emp.maNV.toLowerCase().includes(keyword);
-                const matchStatus = status === 'all' || emp.trangThai === status;
+                const matchName = (emp.HoTen || emp.hoTen || '').toLowerCase().includes(keyword) || (emp.MaNV || emp.maNV || '').toLowerCase().includes(keyword);
+                const matchStatus = status === 'all' || (emp.TrangThai || emp.trangThai) === status;
                 return matchName && matchStatus;
             });
 
@@ -119,12 +119,13 @@ const EmployeeDirectory = {
             } else {
                 emptyMsg.classList.add('hidden');
                 tbody.innerHTML = filtered.map(emp => {
-                    const tagClass = emp.trangThai === 'Khả dụng' ? 'tag-green' : 'tag-red';
+                    const status = emp.TrangThai || emp.trangThai || '';
+                    const tagClass = status === 'Khả dụng' ? 'tag-green' : 'tag-red';
                     return `<tr>
-                        <td class="font-mono text-xs font-semibold text-surface-500">${emp.maNV}</td>
-                        <td class="font-medium text-surface-800">${emp.hoTen}</td>
-                        <td class="text-surface-500">${emp.email}</td>
-                        <td><span class="tag ${tagClass}">${emp.trangThai}</span></td>
+                        <td class="font-mono text-xs font-semibold text-surface-500">${emp.MaNV || emp.maNV || ''}</td>
+                        <td class="font-medium text-surface-800">${emp.HoTen || emp.hoTen || ''}</td>
+                        <td class="text-surface-500">${emp.Email || emp.email || ''}</td>
+                        <td><span class="tag ${tagClass}">${status}</span></td>
                     </tr>`;
                 }).join('');
             }

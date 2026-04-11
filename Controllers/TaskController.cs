@@ -32,7 +32,6 @@ namespace HRManagement.Controllers
 
         // Bước 2: API lấy danh sách nhân viên để Frontend hiển thị dropdown
         [HttpGet("employees")]
-        [Authorize]
         public IActionResult GetEmployees()
         {
             var dataFile = "data.json";
@@ -56,7 +55,6 @@ namespace HRManagement.Controllers
 
         // Bước 3: API lấy thống kê tổng quan cho Dashboard
         [HttpGet("stats")]
-        [Authorize]
         public IActionResult GetStats()
         {
             var dataFile = "data.json";

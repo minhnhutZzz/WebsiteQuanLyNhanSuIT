@@ -22,9 +22,16 @@ const DashboardWidget = {
             const res = await apiFetch('/api/task/stats');
             if (res.ok) {
                 stats = await res.json();
+            } else if (res.status === 401) {
+                console.error('Unauthorized - Token issue:', window.appState.token ? 'Token exists but invalid' : 'No token');
+                showToast('Lỗi xác thực. Vui lòng đăng nhập lại.', 'error');
+            } else {
+                console.error('Failed to load stats:', res.status);
+                showToast('Không thể tải dữ liệu thống kê.', 'error');
             }
         } catch (err) {
-            showToast('Không thể tải dữ liệu thống kê.', 'error');
+            console.error('Error fetching stats:', err);
+            showToast('Không thể kết nối đến máy chủ.', 'error');
         }
 
         // Bước 3: Render giao diện Dashboard với dữ liệu thực

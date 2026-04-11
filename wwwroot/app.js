@@ -71,18 +71,34 @@ window.showToast = showToast;
 // === API Helper ===
 export async function apiFetch(url, options = {}) {
     const headers = { 'Content-Type': 'application/json', ...options.headers };
-    if (window.appState.token) headers['Authorization'] = `Bearer ${window.appState.token}`;
+    if (window.appState.token) {
+        headers['Authorization'] = `Bearer ${window.appState.token}`;
+        console.log('apiFetch - Authorization header set for:', url);
+    } else {
+        console.warn('apiFetch - No token available for:', url);
+    }
     return fetch(url, { ...options, headers });
 }
 
 // Load app data for components
 async function loadAppData() {
     try {
+        // Ensure token is set before making authenticated requests
+        if (!window.appState.token) {
+            console.warn('No token available for loadAppData');
+            return;
+        }
+        
         const response = await apiFetch('/api/hr/payroll');
         if (response.ok) {
             const data = await response.json();
-            window.appData = data;
-            console.log('Loaded payroll data:', data);
+            window.appData = {
+                BangLuongs: data.payroll || [],
+                NhanViens: data.employees || []
+            };
+            console.log('Loaded payroll data:', window.appData);
+        } else if (response.status === 401) {
+            console.error('Unauthorized - token may be invalid');
         }
     } catch (e) {
         console.error('Failed to load app data:', e);
@@ -281,7 +297,11 @@ DOM.loginForm.addEventListener('submit', async (e) => {
             localStorage.setItem('user', JSON.stringify(user));
             window.appState.token = data.token;
             window.appState.user = user;
+            console.log('Token set:', window.appState.token ? 'YES' : 'NO');
+            console.log('Token value:', window.appState.token?.substring(0, 50) + '...');
             showToast('Đăng nhập thành công');
+            // Give a moment for state to settle before navigating
+            await new Promise(r => setTimeout(r, 100));
             // Direct navigate to dashboard after login (skip home page)
             window.navigate('dashboard');
         } else {
