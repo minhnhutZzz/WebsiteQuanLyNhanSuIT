@@ -21,4 +21,10 @@ namespace HRManagement.Models
         public DateTime? NgayBatDau { get; set; }
         public DateTime? HanChot { get; set; }
     }
+
+    public class PayrollConfirmRequest
+    {
+        public string[] PayrollIds { get; set; } = new string[0];
+        public string Date { get; set; } = string.Empty;
+    }
 }

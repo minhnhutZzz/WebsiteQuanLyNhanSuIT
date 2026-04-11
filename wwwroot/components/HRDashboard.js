@@ -137,7 +137,7 @@ export default class HRDashboard {
                                 <i class="fa-solid fa-sync mr-2"></i>Refresh
                             </button>
                         </div>
-                        <div id="interviews-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><div class="col-span-full text-center py-12"><i class="fa-solid fa-spinner text-4xl text-primary-500 animate-spin mb-4"></i><p class="text-surface-600">Đang tải...</p></div></div>
+                        <div id="interviews-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><div class="col-span-full text-center py-12"><i class="fa-solid fa-spinner text-4xl text-primary-500 fa-spin mb-4"></i><p class="text-surface-600">Đang tải...</p></div></div>
                     </div>
 
                     <!-- Manage Posts Section -->
@@ -198,8 +198,8 @@ export default class HRDashboard {
                     <!-- Loading Overlay -->
                     <div id="loading-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                         <div class="bg-white rounded-lg p-6 text-center">
-                            <div class="animate-spin inline-block mb-4">
-                                <i class="fa-solid fa-spinner text-primary-500 text-3xl"></i>
+                            <div class="inline-block mb-4">
+                                <i class="fa-solid fa-spinner text-primary-500 text-3xl fa-spin"></i>
                             </div>
                             <p class="text-surface-900 font-semibold">Đang xử lý...</p>
                         </div>

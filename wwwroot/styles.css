@@ -146,6 +146,30 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* --- Font Awesome Spinner Animation --- */
+.fa-spin {
+    animation: fa-spin 2s infinite linear;
+}
+@keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- Payment Processing Steps --- */
+.step-item {
+    transition: all 0.3s ease;
+}
+.step-item.completed {
+    background: #d3f9d8 !important;
+}
+.step-item.active {
+    background: #e7f5ff !important;
+    box-shadow: 0 0 0 2px #4c6ef5;
+}
+.step-item.active .fa-spin {
+    animation: fa-spin 2s infinite linear;
+}
+
 /* --- Checkbox custom --- */
 .checkbox-label {
     display: flex;

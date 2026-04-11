@@ -6,7 +6,12 @@ import HomePage from './components/HomePage.js';
 import AboutPage from './components/AboutPage.js';
 import HRDashboard from './components/HRDashboard.js';
 import SalaryManagement from './components/SalaryManagement.js';
+import PayrollProcessing from './components/PayrollProcessing.js';
 import HeaderFooter from './components/Header.js';
+
+// Make components globally accessible for onclick handlers
+window.SalaryManagement = SalaryManagement;
+window.PayrollProcessing = PayrollProcessing;
 
 // Bước 1: Khởi tạo State toàn cục
 window.appState = {
@@ -14,6 +19,12 @@ window.appState = {
     token: null,
     currentTab: 'employees',
     currentPage: 'home' // Track current page (home, about, dashboard, profile, login)
+};
+
+// Initialize appData
+window.appData = {
+    BangLuongs: [],
+    NhanViens: []
 };
 
 // Check if user is already logged-in (from localStorage)
@@ -41,6 +52,7 @@ const DOM = {
 // === Toast ===
 export function showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');
+    if (!container) return;
     const el = document.createElement('div');
     const bg = type === 'success' ? 'bg-green-600' : 'bg-red-600';
     const icon = type === 'success' ? 'fa-check' : 'fa-xmark';
@@ -53,11 +65,28 @@ export function showToast(message, type = 'success') {
     }, 3500);
 }
 
+// Make showToast globally accessible
+window.showToast = showToast;
+
 // === API Helper ===
 export async function apiFetch(url, options = {}) {
     const headers = { 'Content-Type': 'application/json', ...options.headers };
     if (window.appState.token) headers['Authorization'] = `Bearer ${window.appState.token}`;
     return fetch(url, { ...options, headers });
+}
+
+// Load app data for components
+async function loadAppData() {
+    try {
+        const response = await apiFetch('/api/hr/payroll');
+        if (response.ok) {
+            const data = await response.json();
+            window.appData = data;
+            console.log('Loaded payroll data:', data);
+        }
+    } catch (e) {
+        console.error('Failed to load app data:', e);
+    }
 }
 
 // === Routing ===
@@ -77,7 +106,7 @@ function renderPage(page) {
 }
 
 // Global navigation function - called by Header component listeners
-window.navigate = function(route) {
+window.navigate = async function(route) {
     window.appState.currentPage = route;
     const container = DOM.appContainer;
     if (!container) return;
@@ -90,6 +119,29 @@ window.navigate = function(route) {
         // Show login screen
         if (DOM.authScreen) DOM.authScreen.classList.remove('hidden');
         if (DOM.appScreen) DOM.appScreen.classList.add('hidden');
+        
+        // Attach event listeners to back button and logo when showing login
+        setTimeout(() => {
+            const loginBackBtn = document.getElementById('login-back-home-btn');
+            const loginLogoBtn = document.getElementById('login-logo-home');
+            
+            if (loginBackBtn && !loginBackBtn.dataset.listenerAttached) {
+                loginBackBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.navigate('home');
+                });
+                loginBackBtn.dataset.listenerAttached = 'true';
+            }
+            
+            if (loginLogoBtn && !loginLogoBtn.dataset.listenerAttached) {
+                loginLogoBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.navigate('home');
+                });
+                loginLogoBtn.dataset.listenerAttached = 'true';
+            }
+        }, 0);
+        
         return;
     }
     
@@ -105,6 +157,9 @@ window.navigate = function(route) {
         } else if (route === 'about') {
             AboutPage.render(contentDiv);
         } else if (route === 'dashboard') {
+            // Load app data before rendering
+            await loadAppData();
+            
             // Role-based dashboard routing
             const userRole = window.appState.user?.role || window.appState.user?.Role;
             console.log('Dashboard routing - Role:', userRole);
@@ -172,6 +227,10 @@ window.navigate = function(route) {
                     </div>
                 </div>
             `;
+        } else if (route === 'payroll-processing') {
+            // Payroll processing page
+            await loadAppData();
+            PayrollProcessing.render(contentDiv);
         } else {
             HomePage.render(contentDiv);
         }
@@ -193,7 +252,7 @@ function initAuth() {
         navigateToDashboard();
     } else {
         // Chưa đăng nhập → vào trang chủ
-        navigateTo('home');
+        window.navigate('home');
     }
 }
 
@@ -231,6 +290,9 @@ DOM.loginForm.addEventListener('submit', async (e) => {
     } catch { showToast('Lỗi kết nối máy chủ', 'error'); }
     finally { btn.innerHTML = orig; btn.disabled = false; }
 });
+
+// === Back to Home from Login ===
+// (Event listeners attached in window.navigate() when login route is triggered)
 
 // Bước 4: Logout
 const logoutBtn = document.getElementById('logout-btn');

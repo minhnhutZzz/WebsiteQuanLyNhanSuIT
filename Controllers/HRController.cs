@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using HRManagement.Models;
 
 namespace HRManagement.Controllers
 {
@@ -718,6 +719,84 @@ namespace HRManagement.Controllers
 
             _autoReplyMessage = request.Message;
             return Ok(new { success = true, message = "Cập nhật tin nhắn tự động thành công", data = new { autoReply = _autoReplyMessage } });
+        }
+
+        [HttpGet("payroll")]
+        public IActionResult GetPayroll()
+        {
+            try
+            {
+                var dataPath = Path.Combine(Directory.GetCurrentDirectory(), "data.json");
+                var jsonContent = System.IO.File.ReadAllText(dataPath);
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var data = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonContent, options) 
+                    ?? new Dictionary<string, JsonElement>();
+
+                var payroll = new List<object>();
+                var employees = new List<object>();
+
+                if (data.ContainsKey("BangLuongs"))
+                {
+                    foreach (var item in data["BangLuongs"].EnumerateArray())
+                    {
+                        payroll.Add(JsonSerializer.Deserialize<object>(item.GetRawText()) ?? new object());
+                    }
+                }
+
+                if (data.ContainsKey("NhanViens"))
+                {
+                    foreach (var item in data["NhanViens"].EnumerateArray())
+                    {
+                        employees.Add(JsonSerializer.Deserialize<object>(item.GetRawText()) ?? new object());
+                    }
+                }
+
+                return Ok(new { success = true, payroll = payroll, employees = employees });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading payroll: {ex.Message}");
+                return BadRequest(new { success = false, message = "Lỗi: " + ex.Message });
+            }
+        }
+
+        [HttpPost("payroll/confirm")]
+        public IActionResult ConfirmPayroll([FromBody] PayrollConfirmRequest request)
+        {
+            try
+            {
+                var dataPath = Path.Combine(Directory.GetCurrentDirectory(), "data.json");
+                var jsonContent = System.IO.File.ReadAllText(dataPath);
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, WriteIndented = true };
+                var data = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonContent, options) 
+                    ?? new Dictionary<string, JsonElement>();
+
+                if (data.ContainsKey("BangLuongs"))
+                {
+                    var bangLuongs = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(
+                        data["BangLuongs"].GetRawText(), options) ?? new List<Dictionary<string, object>>();
+                    
+                    foreach (var payrollId in request.PayrollIds ?? new string[0])
+                    {
+                        var payroll = bangLuongs.FirstOrDefault(p => p.ContainsKey("id") && p["id"]?.ToString() == payrollId);
+                        if (payroll != null)
+                        {
+                            payroll["TrangThai"] = "Da thanh toan";
+                            payroll["NgayThanhToan"] = request.Date;
+                        }
+                    }
+                    
+                    data["BangLuongs"] = JsonSerializer.SerializeToElement(bangLuongs, options);
+                    System.IO.File.WriteAllText(dataPath, JsonSerializer.Serialize(data, options));
+                }
+
+                return Ok(new { success = true, message = "Cập nhật trạng thái thành công" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating payroll status: {ex.Message}");
+                return BadRequest(new { success = false, message = "Lỗi: " + ex.Message });
+            }
         }
     }
 
