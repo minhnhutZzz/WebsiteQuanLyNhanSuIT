@@ -6,4 +6,3 @@
 *.suo
 *.sln.docstates
 appsettings.Development.json
-data.json
