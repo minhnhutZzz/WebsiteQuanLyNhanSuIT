@@ -24,8 +24,8 @@ const UnifiedTaskForm = {
                             <select id="uf-employee" required class="input-field cursor-pointer">
                                 <option value="">-- Chọn nhân viên --</option>
                                 ${employees.map(emp => {
-                                    const suffix = emp.trangThai === 'Nghỉ phép' ? ' ⛔ Nghỉ phép' : '';
-                                    return `<option value="${emp.maNV}" data-status="${emp.trangThai}">${emp.hoTen} (${emp.maNV})${suffix}</option>`;
+                                    const suffix = emp.TrangThai === 'Nghỉ phép' ? ' ⛔ Nghỉ phép' : '';
+                                    return `<option value="${emp.MaNV}" data-status="${emp.TrangThai}">${emp.HoTen} (${emp.MaNV})${suffix}</option>`;
                                 }).join('')}
                             </select>
                         </div>
@@ -198,11 +198,11 @@ const UnifiedTaskForm = {
                 await new Promise(r => setTimeout(r, 2000));
 
                 const reqData = {
-                    maNV: empSelect.value,
-                    tenNhiemVu: document.getElementById('uf-task-name').value,
-                    moTa: document.getElementById('uf-desc').value,
-                    ngayBatDau: document.getElementById('uf-start').value,
-                    hanChot: document.getElementById('uf-end').value
+                    MaNV: empSelect.value,
+                    TenNhiemVu: document.getElementById('uf-task-name').value,
+                    MoTa: document.getElementById('uf-desc').value,
+                    NgayBatDau: document.getElementById('uf-start').value,
+                    HanChot: document.getElementById('uf-end').value
                 };
 
                 const res = await apiFetch('/api/task/assign', {

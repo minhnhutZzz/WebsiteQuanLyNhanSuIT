@@ -25,15 +25,49 @@ export default {
             </div>
         `;
         
-        // Since there is no API to fetch tasks specific to the assigned employee yet, we mock fetching from a hypothetical endpoint or just show empty 
-        // For demonstration purposes, we will display a mock empty message until a real API is connected
-        setTimeout(() => {
+        // Load tasks from API
+        try {
+            console.log('[EmployeeTasks] Đang tải công việc...');
+            
+            const { apiFetch } = await import('../app.js');
+            const res = await apiFetch('/api/task/my-tasks');
+            console.log('[EmployeeTasks] API response status:', res.status);
+            
+            const body = document.getElementById('task-list-body');
+            if (!body) return;
+            
+            if (res.ok) {
+                const tasks = await res.json();
+                console.log('[EmployeeTasks] ✓ Loaded', tasks.length, 'tasks');
+                
+                if (tasks.length === 0) {
+                    body.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-surface-500 italic">Chưa có công việc nào được phân công.</td></tr>`;
+                    return;
+                }
+                
+                body.innerHTML = tasks.map(task => `
+                    <tr class="hover:bg-surface-50 transition">
+                        <td class="px-6 py-4 font-medium text-surface-900">${task.TenNhiemVu || '-'}</td>
+                        <td class="px-6 py-4 text-surface-600">${task.MoTa || '-'}</td>
+                        <td class="px-6 py-4">${task.NgayBatDau ? new Date(task.NgayBatDau).toLocaleDateString('vi-VN') : '-'}</td>
+                        <td class="px-6 py-4">${task.HanChot ? new Date(task.HanChot).toLocaleDateString('vi-VN') : '-'}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold ${task.TrangThai === 'Hoàn thành' ? 'bg-green-100 text-green-700' : task.TrangThai === 'Đang xử lý' ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-700'}">
+                                ${task.TrangThai || 'Mới'}
+                            </span>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                console.error('[EmployeeTasks] ✗ API error:', res.status);
+                body.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-red-600">Lỗi: ${res.status}</td></tr>`;
+            }
+        } catch (error) {
+            console.error('[EmployeeTasks] ✗ Exception:', error);
             const body = document.getElementById('task-list-body');
             if (body) {
-                // In a real application, you would do a fetch here.
-                // e.g. const res = await fetch('/api/Task/my-tasks', { headers: { Authorization: ...} })
-                body.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-surface-500 italic">Chưa có công việc nào được phân công.</td></tr>`;
+                body.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-red-600">Lỗi tải dữ liệu</td></tr>`;
             }
-        }, 500);
+        }
     }
 }

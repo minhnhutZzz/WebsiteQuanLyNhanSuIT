@@ -261,7 +261,7 @@ namespace HRManagement.Controllers
                             var interviewObj = JsonSerializer.Deserialize<Dictionary<string, object>>(item.GetRawText(), options) 
                                 ?? new Dictionary<string, object>();
                             
-                            if (interviewObj != null && interviewObj.ContainsKey("id") && interviewObj["id"]?.ToString() == id)
+                            if (interviewObj.ContainsKey("id") && interviewObj["id"]?.ToString() == id)
                             {
                                 // Update
                                 interviewObj["title"] = request.Title;
@@ -270,7 +270,7 @@ namespace HRManagement.Controllers
                                 interviewObj["participants"] = request.Participants ?? new string[0];
                                 found = true;
                             }
-                            interviews.Add(interviewObj);
+                            interviews.Add(interviewObj!);
                         }
                         newData[kvp.Key] = interviews;
                         
@@ -726,7 +726,12 @@ namespace HRManagement.Controllers
         {
             try
             {
+                Console.WriteLine("[HRController.GetPayroll] Yêu cầu dữ liệu lương...");
+                
                 var dataPath = Path.Combine(Directory.GetCurrentDirectory(), "data.json");
+                Console.WriteLine($"[HRController.GetPayroll] Data path: {dataPath}");
+                Console.WriteLine($"[HRController.GetPayroll] File exists: {System.IO.File.Exists(dataPath)}");
+                
                 var jsonContent = System.IO.File.ReadAllText(dataPath);
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var data = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonContent, options) 
@@ -741,6 +746,11 @@ namespace HRManagement.Controllers
                     {
                         payroll.Add(JsonSerializer.Deserialize<object>(item.GetRawText()) ?? new object());
                     }
+                    Console.WriteLine($"[HRController.GetPayroll] ✓ Loaded {payroll.Count} payroll records");
+                }
+                else
+                {
+                    Console.WriteLine("[HRController.GetPayroll] ✗ BangLuongs key not found in data.json");
                 }
 
                 if (data.ContainsKey("NhanViens"))
@@ -749,13 +759,20 @@ namespace HRManagement.Controllers
                     {
                         employees.Add(JsonSerializer.Deserialize<object>(item.GetRawText()) ?? new object());
                     }
+                    Console.WriteLine($"[HRController.GetPayroll] ✓ Loaded {employees.Count} employees");
+                }
+                else
+                {
+                    Console.WriteLine("[HRController.GetPayroll] ✗ NhanViens key not found in data.json");
                 }
 
+                Console.WriteLine("[HRController.GetPayroll] ✓ Trả về dữ liệu thành công");
                 return Ok(new { success = true, payroll = payroll, employees = employees });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading payroll: {ex.Message}");
+                Console.WriteLine($"[HRController.GetPayroll] ✗ Exception: {ex.Message}");
+                Console.WriteLine($"[HRController.GetPayroll] Stack: {ex.StackTrace}");
                 return BadRequest(new { success = false, message = "Lỗi: " + ex.Message });
             }
         }

@@ -10,25 +10,35 @@ export default class SalaryManagement {
     
     static async loadData() {
         try {
+            console.log('[SalaryManagement.loadData] Bắt đầu tải dữ liệu lương...');
+            
             // Load from window.appData if available
             if (window.appData?.BangLuongs && window.appData.BangLuongs.length > 0) {
                 this.payrollData = window.appData.BangLuongs;
                 this.nhanVienData = window.appData.NhanViens;
-                console.log('Loaded payroll data from appData:', this.payrollData.length, 'records');
+                console.log('[SalaryManagement.loadData] ✓ Loaded from appData:', this.payrollData.length, 'records');
                 return;
             }
             
+            console.log('[SalaryManagement.loadData] appData không có, call API...');
+            
             // Try to load from API
             const response = await apiFetch('/api/hr/payroll');
+            console.log('[SalaryManagement.loadData] API response status:', response.status);
+            
             if (response.ok) {
                 const data = await response.json();
                 this.payrollData = data.payroll || [];
                 this.nhanVienData = data.employees || [];
                 window.appData = data;
-                console.log('Loaded payroll data from API');
+                console.log('[SalaryManagement.loadData] ✓ Loaded from API:', this.payrollData.length, 'payroll records');
+            } else {
+                const errorText = await response.text();
+                console.error('[SalaryManagement.loadData] ✗ API error (status ' + response.status + '):', errorText);
             }
         } catch (e) {
-            console.log('Error loading data:', e);
+            console.error('[SalaryManagement.loadData] ✗ Exception:', e.message);
+            console.error(e.stack);
         }
     }
     

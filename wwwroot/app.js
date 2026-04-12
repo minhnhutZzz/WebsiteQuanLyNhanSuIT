@@ -2,6 +2,7 @@ import EmployeeDirectory from './components/EmployeeDirectory.js';
 import UnifiedTaskForm from './components/UnifiedTaskForm.js';
 import EmployeeAttendance from './components/EmployeeAttendance.js';
 import EmployeeTasks from './components/EmployeeTasks.js';
+import EmployeeSalaryView from './components/EmployeeSalaryView.js';
 import HomePage from './components/HomePage.js';
 import AboutPage from './components/AboutPage.js';
 import HRDashboard from './components/HRDashboard.js';
@@ -83,25 +84,37 @@ export async function apiFetch(url, options = {}) {
 // Load app data for components
 async function loadAppData() {
     try {
+        console.log('[loadAppData] Bắt đầu tải dữ liệu ứng dụng...');
+        
         // Ensure token is set before making authenticated requests
         if (!window.appState.token) {
-            console.warn('No token available for loadAppData');
+            console.warn('[loadAppData] ✗ Không có token');
             return;
         }
         
+        console.log('[loadAppData] Token: ' + window.appState.token.substring(0, 50) + '...');
+        
         const response = await apiFetch('/api/hr/payroll');
+        console.log('[loadAppData] Response status:', response.status);
+        
         if (response.ok) {
             const data = await response.json();
+            console.log('[loadAppData] ✓ Raw data from API:', data);
+            
             window.appData = {
                 BangLuongs: data.payroll || [],
                 NhanViens: data.employees || []
             };
-            console.log('Loaded payroll data:', window.appData);
+            console.log('[loadAppData] ✓ appData set: BangLuongs=' + window.appData.BangLuongs.length + ', NhanViens=' + window.appData.NhanViens.length);
         } else if (response.status === 401) {
-            console.error('Unauthorized - token may be invalid');
+            console.error('[loadAppData] ✗ Unauthorized - token may be invalid');
+        } else {
+            const errorText = await response.text();
+            console.error('[loadAppData] ✗ Response error (status ' + response.status + '):', errorText);
         }
     } catch (e) {
-        console.error('Failed to load app data:', e);
+        console.error('[loadAppData] ✗ Exception:', e.message);
+        console.error('[loadAppData] Stack:', e.stack);
     }
 }
 
@@ -294,9 +307,10 @@ DOM.loginForm.addEventListener('submit', async (e) => {
         console.log('Login response:', data);
         if (res.ok) {
             const user = data.User || data.user; // Handle both cases
-            localStorage.setItem('jwt', data.token);
+            const token = data.Token || data.token; // API returns PascalCase Token
+            localStorage.setItem('jwt', token);
             localStorage.setItem('user', JSON.stringify(user));
-            window.appState.token = data.token;
+            window.appState.token = token;
             window.appState.user = user;
             console.log('Token set:', window.appState.token ? 'YES' : 'NO');
             console.log('Token value:', window.appState.token?.substring(0, 50) + '...');
@@ -376,7 +390,14 @@ function switchDashboardTab(tabId, container, role) {
     else if (tabId === 'workspace') UnifiedTaskForm.render(contentDiv);
     else if (tabId === 'attendance') EmployeeAttendance.render(contentDiv);
     else if (tabId === 'mytasks') EmployeeTasks.render(contentDiv);
-    else if (tabId === 'salary') SalaryManagement.render(contentDiv);
+    else if (tabId === 'salary') {
+        // Use EmployeeSalaryView for employees, SalaryManagement for accountants
+        if (role === 'NhanVien') {
+            EmployeeSalaryView.render(contentDiv);
+        } else {
+            SalaryManagement.render(contentDiv);
+        }
+    }
 }
 
 function getTabLabel(tabId) {
