@@ -9,6 +9,9 @@ import HRDashboard from './components/HRDashboard.js';
 import SalaryManagement from './components/SalaryManagement.js';
 import PayrollProcessing from './components/PayrollProcessing.js';
 import HeaderFooter from './components/Header.js';
+import { CurrentlyWorkingStatus } from './components/CurrentlyWorkingStatus.js';
+import { LeaveRequest } from './components/LeaveRequest.js';
+import { LeaveApproval } from './components/LeaveApproval.js';
 
 // Make components globally accessible for onclick handlers
 window.SalaryManagement = SalaryManagement;
@@ -209,11 +212,17 @@ window.navigate = async function(route) {
             const user = window.appState.user;
             const roles = { 'HR': 'HR Manager', 'QuanLy': 'Quản Lý', 'KeToan': 'Kế Toán', 'NhanVien': 'Nhân Viên' };
             const roleDisplay = roles[user?.role || user?.Role] || 'Nhân Viên';
+            
             contentDiv.innerHTML = `
                 <div class="max-w-4xl mx-auto">
-                    <div class="mb-8">
-                        <h1 class="text-4xl font-bold text-surface-900 mb-2">Hồ Sơ Cá Nhân</h1>
-                        <p class="text-lg text-surface-600">Quản lý thông tin tài khoản của bạn</p>
+                    <div class="mb-8 flex items-center justify-between">
+                        <div>
+                            <h1 class="text-4xl font-bold text-surface-900 mb-2">Hồ Sơ Cá Nhân</h1>
+                            <p class="text-lg text-surface-600">Quản lý thông tin tài khoản của bạn</p>
+                        </div>
+                        <button id="editToggleBtn" class="px-6 py-2 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-lg transition">
+                            <i class="fa-solid fa-edit mr-2"></i> Sửa
+                        </button>
                     </div>
 
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
@@ -223,40 +232,33 @@ window.navigate = async function(route) {
                                     <i class="fa-solid fa-user text-white text-5xl"></i>
                                 </div>
                                 <div>
-                                    <h2 class="text-3xl font-bold text-surface-900 mb-2">${user?.HoTen || user?.hoTen || 'Người dùng'}</h2>
+                                    <h2 class="text-3xl font-bold text-surface-900 mb-2" id="profileName">${user?.HoTen || user?.hoTen || 'Người dùng'}</h2>
                                     <p class="text-lg text-primary-600 font-semibold">${roleDisplay}</p>
                                 </div>
                             </div>
 
                             <div class="border-t border-gray-200 pt-6">
                                 <h3 class="text-xl font-bold text-surface-900 mb-4">Thông Tin Chi Tiết</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label class="block text-sm font-semibold text-surface-600 mb-2">Mã Nhân Viên</label>
-                                        <p class="text-lg text-surface-800 bg-surface-50 px-4 py-2 rounded-lg">${user?.MaNV || user?.maNV || '-'}</p>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-surface-600 mb-2">Email</label>
-                                        <p class="text-lg text-surface-800 bg-surface-50 px-4 py-2 rounded-lg">${user?.Email || user?.email || '-'}</p>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-surface-600 mb-2">Trạng Thái</label>
-                                        <p class="text-lg text-green-700 font-semibold px-4 py-2 rounded-lg bg-green-50">${user?.TrangThai || user?.trangThai || 'Đang làm'}</p>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-surface-600 mb-2">Vai Trò</label>
-                                        <p class="text-lg text-primary-700 font-semibold px-4 py-2 rounded-lg bg-primary-50">${roleDisplay}</p>
-                                    </div>
+                                <div id="profileContent" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- Will be populated by JavaScript -->
                                 </div>
                             </div>
 
-                            <div class="border-t border-gray-200 pt-6 text-center">
+                            <div id="actionButtons" class="border-t border-gray-200 pt-6 text-center">
                                 <button onclick="window.navigate('dashboard')" class="btn-primary">Quay Lại Dashboard</button>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
+
+            // Render profile content
+            renderProfileContent(user, roleDisplay);
+            
+            // Edit button handler
+            document.getElementById('editToggleBtn').addEventListener('click', () => {
+                toggleProfileEdit(user, roleDisplay);
+            });
         } else if (route === 'payroll-processing') {
             // Payroll processing page
             await loadAppData();
@@ -338,13 +340,16 @@ function createDashboardWithTabs(container, role) {
     if (role === 'QuanLy') {
         tabs = [
             { id: 'employees', label: 'Nhân viên', icon: 'fa-users' },
-            { id: 'workspace', label: 'Phân công', icon: 'fa-pen-ruler' }
+            { id: 'workspace', label: 'Phân công', icon: 'fa-pen-ruler' },
+            { id: 'currently-working', label: 'Đang làm việc', icon: 'fa-hourglass-end' },
+            { id: 'leave-approval', label: 'Duyệt Nghỉ', icon: 'fa-file-contract' }
         ];
         window.appState.currentTab = 'employees';
     } else if (role === 'NhanVien') {
         tabs = [
             { id: 'attendance', label: 'Chấm công', icon: 'fa-clock' },
             { id: 'mytasks', label: 'Công việc của tôi', icon: 'fa-list-check' },
+            { id: 'leave-request', label: 'Xin Nghỉ', icon: 'fa-calendar-check' },
             { id: 'salary', label: 'Lương', icon: 'fa-money-bill-wave' }
         ];
         window.appState.currentTab = 'attendance';
@@ -388,8 +393,11 @@ function switchDashboardTab(tabId, container, role) {
     // Render component
     if (tabId === 'employees') EmployeeDirectory.render(contentDiv);
     else if (tabId === 'workspace') UnifiedTaskForm.render(contentDiv);
+    else if (tabId === 'currently-working') CurrentlyWorkingStatus.render(contentDiv);
+    else if (tabId === 'leave-approval') LeaveApproval.render(contentDiv);
     else if (tabId === 'attendance') EmployeeAttendance.render(contentDiv);
     else if (tabId === 'mytasks') EmployeeTasks.render(contentDiv);
+    else if (tabId === 'leave-request') LeaveRequest.render(contentDiv);
     else if (tabId === 'salary') {
         // Use EmployeeSalaryView for employees, SalaryManagement for accountants
         if (role === 'NhanVien') {
@@ -404,8 +412,11 @@ function getTabLabel(tabId) {
     const labels = {
         employees: 'Nhân viên',
         workspace: 'Phân công',
+        'currently-working': 'Đang làm việc',
+        'leave-approval': 'Duyệt Nghỉ',
         attendance: 'Chấm công',
         mytasks: 'Công việc của tôi',
+        'leave-request': 'Xin Nghỉ',
         salary: 'Lương'
     };
     return labels[tabId] || '';
@@ -449,5 +460,141 @@ export function switchTab(tab) {
     setTimeout(() => DOM.viewOutlet.classList.remove('fade-in'), 300);
 }
 */
+
+// Profile Edit Functions
+function renderProfileContent(user, roleDisplay) {
+    const profileContent = document.getElementById('profileContent');
+    const maNV = user?.MaNV || user?.maNV || '-';
+    const email = user?.Email || user?.email || '-';
+    const trangThai = user?.TrangThai || user?.trangThai || 'Đang làm';
+
+    profileContent.innerHTML = `
+        <div>
+            <label class="block text-sm font-semibold text-surface-600 mb-2">Mã Nhân Viên</label>
+            <p class="text-lg text-surface-800 bg-surface-50 px-4 py-2 rounded-lg">${maNV}</p>
+        </div>
+        <div>
+            <label class="block text-sm font-semibold text-surface-600 mb-2">Email</label>
+            <p class="text-lg text-surface-800 bg-surface-50 px-4 py-2 rounded-lg">${email}</p>
+        </div>
+        <div>
+            <label class="block text-sm font-semibold text-surface-600 mb-2">Trạng Thái</label>
+            <p class="text-lg text-green-700 font-semibold px-4 py-2 rounded-lg bg-green-50">${trangThai}</p>
+        </div>
+        <div>
+            <label class="block text-sm font-semibold text-surface-600 mb-2">Vai Trò</label>
+            <p class="text-lg text-primary-700 font-semibold px-4 py-2 rounded-lg bg-primary-50">${roleDisplay}</p>
+        </div>
+    `;
+}
+
+function toggleProfileEdit(user, roleDisplay) {
+    const profileContent = document.getElementById('profileContent');
+    const actionButtons = document.getElementById('actionButtons');
+    const editBtn = document.getElementById('editToggleBtn');
+    const isEditing = editBtn.textContent.includes('Hủy');
+
+    if (!isEditing) {
+        // Switch to edit mode
+        const maNV = user?.MaNV || user?.maNV || '-';
+        const email = user?.Email || user?.email || '-';
+        const hoTen = user?.HoTen || user?.hoTen || '';
+
+        profileContent.innerHTML = `
+            <div class="md:col-span-2">
+                <label class="block text-sm font-semibold text-surface-600 mb-2">Họ Tên</label>
+                <input type="text" id="editHoTen" value="${hoTen}" class="input-field w-full" placeholder="Nhập họ tên">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-surface-600 mb-2">Mã Nhân Viên</label>
+                <input type="text" value="${maNV}" class="input-field w-full" disabled>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-surface-600 mb-2">Email</label>
+                <input type="email" id="editEmail" value="${email}" class="input-field w-full" placeholder="Nhập email">
+            </div>
+        `;
+
+        actionButtons.innerHTML = `
+            <div class="flex gap-3 justify-center">
+                <button onclick="window.saveProfile('${maNV}', '${roleDisplay}')" class="px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition">
+                    <i class="fa-solid fa-check mr-2"></i> Lưu
+                </button>
+                <button onclick="window.cancelProfileEdit('${roleDisplay}')" class="px-6 py-2 bg-gray-400 hover:bg-gray-500 text-white font-semibold rounded-lg transition">
+                    <i class="fa-solid fa-times mr-2"></i> Hủy
+                </button>
+            </div>
+        `;
+
+        editBtn.innerHTML = '<i class="fa-solid fa-ban mr-2"></i> Hủy';
+        editBtn.disabled = true;
+    }
+}
+
+window.saveProfile = async function(maNV, roleDisplay) {
+    const hoTen = document.getElementById('editHoTen').value.trim();
+    const email = document.getElementById('editEmail').value.trim();
+
+    if (!hoTen || !email) {
+        showToast('Vui lòng điền đầy đủ thông tin', 'error');
+        return;
+    }
+
+    try {
+        const saveBtn = document.querySelector('[onclick*="saveProfile"]');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner"></span> Đang lưu...';
+
+        const response = await apiFetch('/api/auth/update-profile', {
+            method: 'POST',
+            body: JSON.stringify({
+                hoTen,
+                email
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            showToast('✓ Cập nhật thông tin thành công!', 'success');
+            // Update global user state
+            window.appState.user.HoTen = hoTen;
+            window.appState.user.Email = email;
+            
+            // Refresh profile display
+            const user = window.appState.user;
+            const profileName = document.getElementById('profileName');
+            if (profileName) {
+                profileName.textContent = hoTen;
+            }
+
+            const editBtn = document.getElementById('editToggleBtn');
+            editBtn.innerHTML = '<i class="fa-solid fa-edit mr-2"></i> Sửa';
+            editBtn.disabled = false;
+
+            renderProfileContent(user, roleDisplay);
+            document.getElementById('actionButtons').innerHTML = `
+                <button onclick="window.navigate('dashboard')" class="btn-primary">Quay Lại Dashboard</button>
+            `;
+        } else {
+            showToast(data.message || 'Lỗi cập nhật', 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('Lỗi kết nối', 'error');
+    }
+};
+
+window.cancelProfileEdit = function(roleDisplay) {
+    const user = window.appState.user;
+    const editBtn = document.getElementById('editToggleBtn');
+    editBtn.innerHTML = '<i class="fa-solid fa-edit mr-2"></i> Sửa';
+    editBtn.disabled = false;
+    
+    renderProfileContent(user, roleDisplay);
+    document.getElementById('actionButtons').innerHTML = `
+        <button onclick="window.navigate('dashboard')" class="btn-primary">Quay Lại Dashboard</button>
+    `;
+};
 
 document.addEventListener('DOMContentLoaded', initAuth);

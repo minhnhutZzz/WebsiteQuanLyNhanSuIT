@@ -88,7 +88,6 @@ const EmployeeDirectory = {
                                 <th>Mã NV</th>
                                 <th>Họ tên</th>
                                 <th>Email</th>
-                                <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody id="emp-tbody"></tbody>
@@ -119,13 +118,10 @@ const EmployeeDirectory = {
             } else {
                 emptyMsg.classList.add('hidden');
                 tbody.innerHTML = filtered.map(emp => {
-                    const status = emp.TrangThai || emp.trangThai || '';
-                    const tagClass = status === 'Khả dụng' ? 'tag-green' : 'tag-red';
                     return `<tr>
                         <td class="font-mono text-xs font-semibold text-surface-500">${emp.MaNV || emp.maNV || ''}</td>
                         <td class="font-medium text-surface-800">${emp.HoTen || emp.hoTen || ''}</td>
                         <td class="text-surface-500">${emp.Email || emp.email || ''}</td>
-                        <td><span class="tag ${tagClass}">${status}</span></td>
                     </tr>`;
                 }).join('');
             }

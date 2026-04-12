@@ -89,87 +89,106 @@ export default {
 
 async function loadTodayAttendance() {
     try {
-        const response = await apiFetch('/api/hr/payroll');
+        const response = await apiFetch('/api/task/attendance-history');
         if (!response.ok) throw new Error('Failed to load data');
 
-        const data = await response.json();
+        const history = await response.json();
         const maNv = window.appState.user?.MaNV || window.appState.user?.maNV;
-        
-        // Mock data - in real app, this would come from a dedicated API
+        const today = new Date().toISOString().split('T')[0];
+
         const checkInEl = document.getElementById('check-in-time');
         const checkOutEl = document.getElementById('check-out-time');
         const hoursEl = document.getElementById('hours-worked');
         const checkinBtn = document.getElementById('checkin-btn');
         const checkoutBtn = document.getElementById('checkout-btn');
 
-        // This would be replaced with actual attendance data from API
-        checkInEl.innerText = '--:--:--';
-        checkOutEl.innerText = '--:--:--';
-        hoursEl.innerText = '--:--';
-        checkinBtn.disabled = false;
-        checkoutBtn.disabled = true;
+        // Find today's record
+        const todayRecord = history.find(r => r.date === today);
+
+        if (todayRecord) {
+            console.log('[EmployeeAttendance] ✓ Found today record:', todayRecord);
+            checkInEl.innerText = todayRecord.checkIn;
+            checkOutEl.innerText = todayRecord.checkOut;
+            hoursEl.innerText = todayRecord.hours;
+
+            // If both times exist, disable both buttons
+            if (todayRecord.checkIn !== '--:--:--' && todayRecord.checkOut !== '--:--:--') {
+                checkinBtn.disabled = true;
+                checkoutBtn.disabled = true;
+            }
+            // If only check-in exists, enable check-out
+            else if (todayRecord.checkIn !== '--:--:--') {
+                checkinBtn.disabled = true;
+                checkoutBtn.disabled = false;
+            }
+        } else {
+            console.log('[EmployeeAttendance] No record for today yet');
+            checkInEl.innerText = '--:--:--';
+            checkOutEl.innerText = '--:--:--';
+            hoursEl.innerText = '--:--';
+            checkinBtn.disabled = false;
+            checkoutBtn.disabled = true;
+        }
     } catch (error) {
         console.error('[EmployeeAttendance] Error loading today:', error);
+        // Default state on error
+        document.getElementById('checkin-btn').disabled = false;
+        document.getElementById('checkout-btn').disabled = true;
     }
 }
 
 async function handleCheckIn() {
+    const btn = document.getElementById('checkin-btn');
     try {
-        const btn = document.getElementById('checkin-btn');
         btn.disabled = true;
-        btn.innerHTML = '<span class="spinner"></span> Đang xử lý...';
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã chấm vào';
 
         const response = await apiFetch('/api/task/checkin', { method: 'POST' });
         const data = await response.json();
 
         if (response.ok) {
             showToast('✓ Chấm vào thành công!', 'success');
-            document.getElementById('check-in-time').innerText = new Date(data.time).toLocaleTimeString('vi-VN');
-            document.getElementById('checkin-btn').disabled = true;
+            // Update UI
+            document.getElementById('check-in-time').innerText = new Date().toLocaleTimeString('vi-VN');
             document.getElementById('checkout-btn').disabled = false;
         } else {
             showToast(data.message || 'Lỗi chấm vào', 'error');
             btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-sign-in-alt"></i> Vào Ca';
         }
     } catch (error) {
         console.error('[EmployeeAttendance] Check-in error:', error);
         showToast('Lỗi kết nối', 'error');
-        document.getElementById('checkin-btn').disabled = false;
-    } finally {
-        const btn = document.getElementById('checkin-btn');
-        if (!btn.disabled) {
-            btn.innerHTML = '<i class="fa-solid fa-sign-in-alt"></i> Vào Ca';
-        }
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-sign-in-alt"></i> Vào Ca';
     }
 }
 
 async function handleCheckOut() {
+    const btn = document.getElementById('checkout-btn');
     try {
-        const btn = document.getElementById('checkout-btn');
         btn.disabled = true;
-        btn.innerHTML = '<span class="spinner"></span> Đang xử lý...';
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã chấm ra';
 
         const response = await apiFetch('/api/task/checkout', { method: 'POST' });
         const data = await response.json();
 
         if (response.ok) {
             showToast('✓ Chấm ra thành công!', 'success');
-            document.getElementById('check-out-time').innerText = new Date(data.time).toLocaleTimeString('vi-VN');
-            document.getElementById('hours-worked').innerText = data.hoursWorked + 'h';
-            btn.disabled = true;
+            // Update UI
+            document.getElementById('check-out-time').innerText = new Date().toLocaleTimeString('vi-VN');
+            document.getElementById('checkin-btn').disabled = true;
+            document.getElementById('checkin-btn').innerHTML = '<i class="fa-solid fa-sign-in-alt"></i> Vào Ca';
         } else {
             showToast(data.message || 'Lỗi chấm ra', 'error');
             btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-sign-out-alt"></i> Ra Ca';
         }
     } catch (error) {
         console.error('[EmployeeAttendance] Check-out error:', error);
         showToast('Lỗi kết nối', 'error');
-        document.getElementById('checkout-btn').disabled = false;
-    } finally {
-        const btn = document.getElementById('checkout-btn');
-        if (!btn.disabled) {
-            btn.innerHTML = '<i class="fa-solid fa-sign-out-alt"></i> Ra Ca';
-        }
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-sign-out-alt"></i> Ra Ca';
     }
 }
 
@@ -178,14 +197,20 @@ async function loadAttendanceHistory() {
         const historyEl = document.getElementById('history-content');
         const maNv = window.appState.user?.MaNV || window.appState.user?.maNV;
 
-        // Mock history data
-        const mockHistory = [
-            { date: new Date().toLocaleDateString('vi-VN'), checkIn: '--:--:--', checkOut: '--:--:--', hours: '--' },
-            { date: new Date(Date.now() - 86400000).toLocaleDateString('vi-VN'), checkIn: '08:00:00', checkOut: '17:30:00', hours: '9.5' },
-            { date: new Date(Date.now() - 172800000).toLocaleDateString('vi-VN'), checkIn: '08:15:00', checkOut: '17:45:00', hours: '9.5' },
-        ];
+        console.log('[EmployeeAttendance] Tải lịch sử chấm công...');
 
-        if (mockHistory.length === 0) {
+        // Call real API to get history
+        const response = await apiFetch('/api/task/attendance-history');
+        console.log('[EmployeeAttendance] API response status:', response.status);
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+
+        const history = await response.json();
+        console.log('[EmployeeAttendance] ✓ Loaded', history.length, 'records');
+
+        if (history.length === 0) {
             historyEl.innerHTML = `
                 <div class="text-center py-8">
                     <i class="fa-solid fa-inbox text-gray-300 text-3xl mb-3"></i>
@@ -206,9 +231,9 @@ async function loadAttendanceHistory() {
                     </tr>
                 </thead>
                 <tbody>
-                    ${mockHistory.map(record => `
+                    ${history.map(record => `
                     <tr class="border-b border-gray-100 hover:bg-surface-50">
-                        <td class="px-4 py-3 font-medium text-surface-900">${record.date}</td>
+                        <td class="px-4 py-3 font-medium text-surface-900">${new Date(record.date).toLocaleDateString('vi-VN')}</td>
                         <td class="text-center px-4 py-3 text-blue-600 font-semibold">${record.checkIn}</td>
                         <td class="text-center px-4 py-3 text-red-600 font-semibold">${record.checkOut}</td>
                         <td class="text-right px-4 py-3 text-green-600 font-bold">${record.hours}h</td>
@@ -219,5 +244,14 @@ async function loadAttendanceHistory() {
         `;
     } catch (error) {
         console.error('[EmployeeAttendance] History error:', error);
+        const historyEl = document.getElementById('history-content');
+        if (historyEl) {
+            historyEl.innerHTML = `
+                <div class="text-center py-8">
+                    <i class="fa-solid fa-exclamation-circle text-red-500 text-3xl mb-3"></i>
+                    <p class="text-red-600">Lỗi tải lịch sử: ${error.message}</p>
+                </div>
+            `;
+        }
     }
 }

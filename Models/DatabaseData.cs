@@ -7,14 +7,15 @@ namespace HRManagement.Models
         public List<PhanCong> PhanCongs { get; set; } = new();
         public List<BangLuong> BangLuongs { get; set; } = new();
         public List<Dictionary<string, object>> ChamCong { get; set; } = new();
+        public List<Dictionary<string, object>> XinNghi { get; set; } = new();
     }
 
     public class BangLuong
     {
-        public string id { get; set; }
-        public string MaNV { get; set; }
-        public string HoTen { get; set; }
-        public string Thang { get; set; }
+        public string? id { get; set; }
+        public string? MaNV { get; set; }
+        public string? HoTen { get; set; }
+        public string? Thang { get; set; }
         public long LuongCoBan { get; set; }
         public long PhuCap { get; set; }
         public long Thuong { get; set; }
@@ -25,8 +26,8 @@ namespace HRManagement.Models
         public long CacKhoanTru { get; set; }
         public long TongTruNhap { get; set; }
         public long ThuongThuc { get; set; }
-        public string TrangThai { get; set; }
-        public string NgayXuat { get; set; }
-        public string NgayThanhToan { get; set; }
+        public string? TrangThai { get; set; }
+        public string? NgayXuat { get; set; }
+        public string? NgayThanhToan { get; set; }
     }
 }
